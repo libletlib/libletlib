@@ -1,0 +1,42 @@
+name: GCC-Linux
+
+on:
+  push:
+    branches: [ senpai ]
+  pull_request:
+    branches: [ senpai ]
+
+  workflow_dispatch:
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        standard: [ 98, 11, 14, 17, 20 ]
+        error_style: [ LIBLETLIB_ERROR_EXCEPTION, LIBLETLIB_ERROR_LONGJMP, LIBLETLIB_ERROR_ERRNO, LIBLETLIB_ERROR_NONE ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Environment
+        run: |
+          cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: |
+          cmake -DCMAKE_BUILD_TYPE=Debug \
+                -D${{ matrix.error_style }}=1 \
+                -DCMAKE_CXX_COMPILER=g++ \
+                -DCMAKE_CXX_STANDARD=${{ matrix.standard }} \
+                $GITHUB_WORKSPACE
+
+      - name: Test
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: |
+          cmake --build . --config Debug
+          ./bin/test

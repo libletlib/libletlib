@@ -1,0 +1,24 @@
+name: Codecov
+
+on:
+  push:
+    branches: [ senpai ]
+  pull_request:
+    branches: [ senpai ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Compile
+        run: |
+          g++ test.cpp -o test -fprofile-arcs -ftest-coverage
+          ./test
+          gcov test.cpp
+          bash <(curl -s https://codecov.io/bash) -t ${{ secrets.CODECOV_API_KEY }}
