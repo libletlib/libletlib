@@ -551,11 +551,26 @@ inline void TestOperation<char32_t const*, char32_t const*>(char32_t const* left
 }
 #endif
 
-type(Foo) contains(member(msg) = list("Hello", "World", '!')
+type(Foo) contains(
+    member(msg) = list("Hello", "World", '!')
 
-                       member(println) = [] subroutine(std::cout << st + " " + nd + rd << std::endl;))
+    member(println) = [] subroutine(std::cout << st + " " + nd + rd << std::endl;)
+)
 
-    int main(void)
+let print = []subroutine(
+	for(let& arg : args) {
+		std::cout << arg;
+    }
+);
+
+let println = []subroutine(
+    for(let& arg : args) {
+	    std::cout << arg;
+    }
+    std::cout << std::endl;
+);
+
+int main()
 {
 	TestOperation<bool, bool>(true, true);
 	TestOperation<char, char>('2', '2');
@@ -641,7 +656,7 @@ type(Foo) contains(member(msg) = list("Hello", "World", '!')
 	var foo = new Foo;
 	foo.message("println").apply<3>(foo.message("msg"));
 	var spicyRange = curry(range, 1, 10);
-	std::cout << spicyRange(2) << std::endl;
+	println(spicyRange(2));
 	let list0 = list(1, 2, 3);
 	let list1 = list(3, 2, 1, 4);
 
