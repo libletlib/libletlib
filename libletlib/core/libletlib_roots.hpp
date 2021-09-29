@@ -83,8 +83,27 @@ namespace libletlib
 			virtual ~MetaRoot() noexcept                                       = default;
 			virtual inline MetaRoot* create() const noexcept                   = 0;
 			virtual inline MetaRoot* clone() const noexcept                    = 0;
-			virtual inline var& property(char const* key) noexcept             = 0;
-			virtual inline var const& property(char const* key) const noexcept = 0;
+
+			/// \brief Get a member by its key.
+			/// \param key of member to property.
+			/// \return reference to the member pointed to by its key.
+			LIBLETLIB_NODISCARD inline var& property(char const* const key) noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::EMPTY_VALUE))
+					this->inner = this->inner << backing::list(key, var());
+				else
+					return result;
+				return libletlib::detail::property_reference(this->inner, key);
+			}
+
+			/// \brief Get a const reference to a member by its key.
+			/// \param key of member to property.
+			/// \return const reference to the member pointed to by its key.
+			LIBLETLIB_NODISCARD inline var const& property(char const* const key) const noexcept
+			{
+				return libletlib::detail::property_reference(this->inner, key);
+			}
 		};
 
 		/// \brief "Reverse" inheriting class via Curiously Recurring Template Pattern
@@ -108,27 +127,6 @@ namespace libletlib
 			LIBLETLIB_NODISCARD inline Root<Inheritor>* clone() const noexcept override
 			{
 				return new Inheritor(*static_cast<Inheritor const*>(this));
-			}
-
-			/// \brief Get a member by its key.
-			/// \param key of member to property.
-			/// \return reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var& property(char const* const key) noexcept override
-			{
-				var& result = libletlib::detail::property_reference(this->inner, key);
-				if (std::addressof(result) == std::addressof(libletlib::detail::EMPTY_VALUE))
-					this->inner = this->inner << backing::list(key, var());
-				else
-					return result;
-				return libletlib::detail::property_reference(this->inner, key);
-			}
-
-			/// \brief Get a const reference to a member by its key.
-			/// \param key of member to property.
-			/// \return const reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var const& property(char const* const key) const noexcept override
-			{
-				return libletlib::detail::property_reference(this->inner, key);
 			}
 		};
 

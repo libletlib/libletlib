@@ -557,6 +557,11 @@ type(Foo) contains(
     member(println) = [] subroutine(std::cout << st + " " + nd + rd << std::endl;)
 )
 
+type(Bar) contains(
+    member(foo) = "Foo"
+	member(bar) = [&]lambda(property("foo"))
+)
+
 let print = []subroutine(
 	for(let& arg : args) {
 		std::cout << arg;
@@ -660,6 +665,14 @@ int main()
 	let list0 = list(1, 2, 3);
 	let list1 = list(3, 2, 1, 4);
 
+	let ptrn = list(1, 2, 3);
+
+	let rslt = match(ptrn) with
+	    | "#[iii]" ->* var(1)
+	    | otherwise ->* 0;
+	println(rslt);
+	println(pattern(ptrn));
+
 	let match_test = match(list0, list1) with | [] lambda(st != nd)->*[] lambda(st) | otherwise->*[] lambda(nd);
 
 	std::cout << "Pattern: " << match_test << std::endl;
@@ -691,6 +704,9 @@ int main()
 	let arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	std::cout << str.slice(-1, 2) << std::endl; // "901"
 	std::cout << arr.slice(8, 11) << std::endl; // [8, 9, 9]
+
+	let bar = new Bar;
+	println(bar.message("bar")());
 #endif
 	return EXIT_SUCCESS;
 }

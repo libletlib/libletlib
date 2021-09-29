@@ -346,10 +346,10 @@ namespace libletlib
 		template<>
 		LIBLETLIB_NODISCARD inline var& var::message<var const&>(var const& string) const noexcept
 		{
-			char* const real_string = string.behaviour->as_string(string);
-			var& result             = this->objectify()->property(real_string);
-			deallocate(real_string);
-			return result;
+			//char* const real_string = string.behaviour->as_string(string);
+			//var& result             = this->objectify()->property(string);
+			//deallocate(real_string);
+			return this->objectify()->property(string);
 		}
 	#endif
 

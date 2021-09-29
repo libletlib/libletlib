@@ -85,7 +85,7 @@ namespace libletlib
 			matcher(Arguments... _matchees) noexcept
 			{
 				matchees = backing::list(_matchees...);
-				pattern  = libletlib::detail::pattern_(var(), matchees);
+				pattern  = libletlib::detail::pattern_(libletlib::detail::pattern_, matchees);
 			}
 
 			/// \brief Facilitate match conditions with pattern:

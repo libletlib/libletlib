@@ -750,7 +750,7 @@ namespace libletlib
 				#define with )
 				/// \def otherwise
 				/// Match any pattern.
-				#define otherwise static_cast<char>(enum_any_type_id)
+				#define otherwise var(static_cast<char>(enum_any_type_id))
 			#endif
 
 			/// \def st
