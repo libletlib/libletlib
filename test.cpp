@@ -553,8 +553,7 @@ inline void TestOperation<char32_t const*, char32_t const*>(char32_t const* left
 
 type(Foo) contains(
     member(msg) = list("Hello", "World", '!')
-
-    member(println) = [] subroutine(std::cout << st + " " + nd + rd << std::endl;)
+    member(println) = []subroutine(std::cout << st + " " + nd + rd << std::endl;)
 )
 
 type(Bar) contains(
@@ -670,18 +669,20 @@ int main()
 	let rslt = match(ptrn) with
 	    | "#[iii]" ->* var(1)
 	    | otherwise ->* 0;
-	
+
 	println(rslt);
 	println(pattern(ptrn));
 
-	let match_test = match(list0, list1) with | [] lambda(st != nd)->*[] lambda(st) | otherwise->*[] lambda(nd);
+	let match_test = match(list0, list1) with
+	                 | []lambda(st != nd) ->* []lambda(st)
+	                 | otherwise ->* []lambda(nd);
 
 	std::cout << "Pattern: " << match_test << std::endl;
 
-	std::cout << filter([] lambda(st > 10), foldr([] lambda(st + nd), spicyRange(1))) << std::endl;
+	std::cout << filter([]lambda(st > 10), foldr([]lambda(st + nd), spicyRange(1))) << std::endl;
 
 	let iter = {1, 2, 3};
-	let map2 = foldl([] lambda(nd += (st + 1)), iter, list());
+	let map2 = foldl([]lambda(nd += (st + 1)), iter, list());
 	std::cout << map2 << std::endl;
 
 	let list_sum    = iter + iter;
@@ -698,7 +699,7 @@ int main()
 	var x = 1;
 	std::cout << x.message("value") << std::endl;
 
-	var nested = {1, {"2", {3.0, [] lambda('4')}}};
+	var nested = {1, {"2", {3.0, []lambda('4')}}};
 	std::cout << flatten(nested) << std::endl << foo << std::endl;
 
 	let str = "0123456789";
