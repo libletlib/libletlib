@@ -736,6 +736,9 @@ namespace libletlib
 	#ifndef LIBLETLIB_FREESTANDING
 	using libletlib::detail::MetaRoot;
 	using libletlib::detail::Root;
+	namespace detail {
+		let any_type_pattern = static_cast<char>(enum_any_type_id);
+	}
 	#endif
 }// namespace libletlib
 
@@ -750,7 +753,7 @@ namespace libletlib
 				#define with )
 				/// \def otherwise
 				/// Match any pattern.
-				#define otherwise var(static_cast<char>(enum_any_type_id))
+				#define otherwise libletlib::detail::any_type_pattern
 			#endif
 
 			/// \def st

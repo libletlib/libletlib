@@ -670,6 +670,7 @@ int main()
 	let rslt = match(ptrn) with
 	    | "#[iii]" ->* var(1)
 	    | otherwise ->* 0;
+	
 	println(rslt);
 	println(pattern(ptrn));
 
