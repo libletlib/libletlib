@@ -326,7 +326,7 @@ namespace libletlib
 		template<typename String>
 		LIBLETLIB_NODISCARD inline var& var::message(String const string) noexcept
 		{
-			return this->objectify()->property(string);
+			return this->objectify()->message(string);
 		}
 
 
@@ -337,7 +337,7 @@ namespace libletlib
 		template<typename String>
 		LIBLETLIB_NODISCARD inline var& var::message(String const string) const noexcept
 		{
-			return this->objectify()->property(string);
+			return this->objectify()->message(string);
 		}
 
 		/// \brief Send a message to a object.
@@ -347,9 +347,9 @@ namespace libletlib
 		LIBLETLIB_NODISCARD inline var& var::message<var const&>(var const& string) const noexcept
 		{
 			//char* const real_string = string.behaviour->as_string(string);
-			//var& result             = this->objectify()->property(string);
+			//var& result             = this->objectify()->message(string);
 			//deallocate(real_string);
-			return this->objectify()->property(string);
+			return this->objectify()->message(string);
 		}
 	#endif
 

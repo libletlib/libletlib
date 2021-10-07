@@ -404,7 +404,7 @@ namespace libletlib
 	#ifndef LIBLETLIB_FREESTANDING
 			if (_value.behaviour->rank == enum_void_pointer_type)
 			{
-				var& overload = _value.objectify()->property("[]");
+				var& overload = _value.objectify()->message("[]");
 				if (overload != EMPTY_VALUE)
 				{
 					return overload(_value, _index);

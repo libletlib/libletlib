@@ -328,7 +328,7 @@ namespace libletlib
 						return true;
 	#if (__cplusplus >= 201103L)
 					case enum_void_pointer_type:
-						if (value.objectify()->property("()") != var())
+						if (value.objectify()->message("()") != EMPTY_VALUE)
 							return true;
 						return false;
 	#endif

@@ -791,7 +791,7 @@ namespace libletlib
 					++
 				/// \def lambda
 				/// Syntactic sugar for oneliner returning functions.
-				#define lambda(expression) function(return expression;)
+				#define lambda(expression) []function(return expression;)
 
 				/// \def curry
 				/// Syntactic sugar for currying functions.
@@ -805,7 +805,7 @@ namespace libletlib
 
 			#if (__cplusplus >= 201103L)
 				/// \def type
-				/// Declare a catlang type and inner types within it under this.
+				/// Declare a libletlib type and inner types within it under this.
 				#define type(Name)                                                                                     \
 					class Name final : public Root<Name>                                                               \
 					{                                                                                                  \

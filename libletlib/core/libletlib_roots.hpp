@@ -87,7 +87,7 @@ namespace libletlib
 			/// \brief Get a member by its key.
 			/// \param key of member to property.
 			/// \return reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var& property(char const* const key) noexcept
+			LIBLETLIB_NODISCARD inline var& message(char const* const key) noexcept
 			{
 				var& result = libletlib::detail::property_reference(this->inner, key);
 				if (std::addressof(result) == std::addressof(libletlib::detail::EMPTY_VALUE))
@@ -100,7 +100,7 @@ namespace libletlib
 			/// \brief Get a const reference to a member by its key.
 			/// \param key of member to property.
 			/// \return const reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var const& property(char const* const key) const noexcept
+			LIBLETLIB_NODISCARD inline var const& message(char const* const key) const noexcept
 			{
 				return libletlib::detail::property_reference(this->inner, key);
 			}
@@ -127,6 +127,10 @@ namespace libletlib
 			LIBLETLIB_NODISCARD inline Root<Inheritor>* clone() const noexcept override
 			{
 				return new Inheritor(*static_cast<Inheritor const*>(this));
+			}
+
+			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD Inheritor const* self() const noexcept {
+				return static_cast<Inheritor const*>(this);
 			}
 		};
 

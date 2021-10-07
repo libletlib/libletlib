@@ -558,7 +558,7 @@ type(Foo) contains(
 
 type(Bar) contains(
     member(foo) = "Foo"
-	member(bar) = [&]lambda(property("foo"))
+	member(bar) = [&]function(return this->self()->message("name");)
 )
 
 let print = []subroutine(
@@ -674,15 +674,15 @@ int main()
 	println(pattern(ptrn));
 
 	let match_test = match(list0, list1) with
-	                 | []lambda(st != nd) ->* []lambda(st)
-	                 | otherwise ->* []lambda(nd);
+	                 | lambda(st != nd) ->* lambda(st)
+	                 | otherwise ->* lambda(nd);
 
 	std::cout << "Pattern: " << match_test << std::endl;
 
-	std::cout << filter([]lambda(st > 10), foldr([]lambda(st + nd), spicyRange(1))) << std::endl;
+	std::cout << filter(lambda(st > 10), foldr(lambda(st + nd), spicyRange(1))) << std::endl;
 
 	let iter = {1, 2, 3};
-	let map2 = foldl([]lambda(nd += (st + 1)), iter, list());
+	let map2 = foldl(lambda(nd += (st + 1)), iter, list());
 	std::cout << map2 << std::endl;
 
 	let list_sum    = iter + iter;
@@ -699,7 +699,7 @@ int main()
 	var x = 1;
 	std::cout << x.message("value") << std::endl;
 
-	var nested = {1, {"2", {3.0, []lambda('4')}}};
+	var nested = {1, {"2", {3.0, lambda('4')}}};
 	std::cout << flatten(nested) << std::endl << foo << std::endl;
 
 	let str = "0123456789";
@@ -708,7 +708,7 @@ int main()
 	std::cout << arr.slice(8, 11) << std::endl; // [8, 9, 9]
 
 	let bar = new Bar;
-	println(bar.message("bar")());
+	println(bar["bar"]());
 #endif
 	return EXIT_SUCCESS;
 }
