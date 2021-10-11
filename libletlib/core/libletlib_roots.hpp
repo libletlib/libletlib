@@ -43,7 +43,7 @@ namespace libletlib
 	{
 
 		/// \brief Represents an empty value.
-		var EMPTY_VALUE = var();
+		var empty_value = var();
 
 #if (__cplusplus >= 201103L)
 	#ifndef LIBLETLIB_FREESTANDING
@@ -55,12 +55,13 @@ namespace libletlib
 		{
 			for (var& pair : _target)
 			{
+				std::cout << pair.at(0) << " " << pair.at(1) << std::endl;
 				if (pair.at(0) == _key)
 				{
 					return pair.at(1);
 				}
 			}
-			return EMPTY_VALUE;
+			return empty_value;
 		}
 
 		/// \brief Root type all objects are casted to.
@@ -90,8 +91,8 @@ namespace libletlib
 			LIBLETLIB_NODISCARD inline var& message(char const* const key) noexcept
 			{
 				var& result = libletlib::detail::property_reference(this->inner, key);
-				if (std::addressof(result) == std::addressof(libletlib::detail::EMPTY_VALUE))
-					this->inner = this->inner << backing::list(key, var());
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					return libletlib::detail::empty_value;
 				else
 					return result;
 				return libletlib::detail::property_reference(this->inner, key);

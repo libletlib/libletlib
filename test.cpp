@@ -709,6 +709,12 @@ int main()
 
 	let bar = new Bar;
 	println(bar["bar"]());
+
+	let nil = list();
+	try {
+		println(nil[1]);
+	} catch(std::domain_error const&) {
+	}
 #endif
 	return EXIT_SUCCESS;
 }

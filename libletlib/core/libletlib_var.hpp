@@ -1994,15 +1994,15 @@ namespace libletlib
 			friend var float_index(var const&, var const&) noexcept;
 			friend var double_index(var const&, var const&) noexcept;
 			friend var long_double_index(var const&, var const&) noexcept;
-			friend var string_index(var const&, var const&) noexcept;
-			friend var wide_string_index(var const&, var const&) noexcept;
+			friend var string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
+			friend var wide_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #ifndef LIBLETLIB_DISABLE_UCHAR
 	#if (__cplusplus >= 202002L)
-			friend var bit8_string_index(var const&, var const&) noexcept;
+			friend var bit8_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 	#endif
-			friend var bit16_string_index(var const&, var const&) noexcept;
-			friend var bit32_string_index(var const&, var const&) noexcept;
+			friend var bit16_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
+			friend var bit32_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #endif
 
@@ -2010,9 +2010,9 @@ namespace libletlib
 
 #ifndef LIBLETLIB_FREESTANDING
 
-			friend var array_index(var const&, var const&) noexcept;
+			friend var array_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var subroutine_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
-			friend var function_index(var const&, var const&) noexcept;
+			friend var function_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #endif
 #if (__cplusplus >= 201103L)
@@ -4575,7 +4575,7 @@ namespace libletlib
 						break;
 					case enum_void_pointer_type: {
 						var& overload = this->message("()");
-						if (overload != EMPTY_VALUE)
+						if (overload != empty_value)
 						{
 							result = overload(in);
 						}

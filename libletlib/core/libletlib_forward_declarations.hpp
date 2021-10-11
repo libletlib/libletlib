@@ -43,7 +43,7 @@ namespace libletlib
 		typedef void (*subroutine_t)(var const&, var const&);
 		typedef var (*function_t)(var const&, var const&);
 
-		extern var EMPTY_VALUE;
+		extern var empty_value;
 
 		void LIBLETLIB_EMPTY_SUBROUTINE(var const&, var const&)
 		{
