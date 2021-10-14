@@ -711,10 +711,12 @@ int main()
 	println(bar["bar"]());
 
 	let nil = list();
+#ifdef LIBLETLIB_ERROR_EXCEPTION
 	try {
 		println(nil[1]);
 	} catch(std::domain_error const&) {
 	}
+#endif
 #endif
 	return EXIT_SUCCESS;
 }
