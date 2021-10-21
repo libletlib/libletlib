@@ -2681,6 +2681,7 @@ namespace libletlib
 			friend bool backing::is_curried(var const&) noexcept;
 
 #ifdef LIBLETLIB_HOSTED
+			friend bool match_pattern(var const&, var const&) noexcept;
 			friend var pattern_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldl_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldr_(var const&, var const&) LIBLETLIB_NOEXCEPT;
@@ -4659,11 +4660,14 @@ namespace libletlib
 					for(; low < high; low++)
 						part += this->operator[](low);
 				}
-				else if(this->behaviour->rank == enum_string_type) {
+				else if(this->behaviour->rank == enum_string_type)
+				{
 					part = "";
 					for(; low < high; low++)
 						part += this->operator[](low);
-				} else if(this->behaviour->rank == enum_wide_string_type) {
+				}
+				else if(this->behaviour->rank == enum_wide_string_type)
+				{
 					part = L"";
 					for(; low < high; low++)
 						part += this->operator[](low);

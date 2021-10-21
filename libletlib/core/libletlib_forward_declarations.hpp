@@ -100,41 +100,41 @@ namespace libletlib
 
 #endif
 
-#if (__cplusplus >= 201103L)
-
-		template<typename... Arguments>
-		var list(Arguments const&... element) noexcept;
-
-#else
-		inline var list() noexcept;
-		template<typename Type1>
-		inline var list(Type1) noexcept;
-		template<typename Type1, typename Type2>
-		inline var list(Type1, Type2) noexcept;
-		template<typename Type1, typename Type2, typename Type3>
-		inline var list(Type1, Type2, Type3) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4>
-		inline var list(Type1, Type2, Type3, Type4) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5>
-		inline var list(Type1, Type2, Type3, Type4, Type5) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6>
-		inline var list(Type1, Type2, Type3, Type4, Type5, Type6) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
-		         typename Type7>
-		inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
-		         typename Type7, typename Type8>
-		inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
-		         typename Type7, typename Type8, typename Type9>
-		inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9) noexcept;
-		template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
-		         typename Type7, typename Type8, typename Type9, typename Type10>
-		inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10) noexcept;
-#endif
-
 		namespace backing
 		{
+#if (__cplusplus >= 201103L)
+
+			template<typename... Arguments>
+			var list(Arguments const&... element) noexcept;
+
+#else
+			inline var list() noexcept;
+			template<typename Type1>
+			inline var list(Type1) noexcept;
+			template<typename Type1, typename Type2>
+			inline var list(Type1, Type2) noexcept;
+			template<typename Type1, typename Type2, typename Type3>
+			inline var list(Type1, Type2, Type3) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4>
+			inline var list(Type1, Type2, Type3, Type4) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5>
+			inline var list(Type1, Type2, Type3, Type4, Type5) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6>
+			inline var list(Type1, Type2, Type3, Type4, Type5, Type6) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
+			         typename Type7>
+			inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
+			         typename Type7, typename Type8>
+			inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
+			         typename Type7, typename Type8, typename Type9>
+			inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9) noexcept;
+			template<typename Type1, typename Type2, typename Type3, typename Type4, typename Type5, typename Type6,
+			         typename Type7, typename Type8, typename Type9, typename Type10>
+			inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10) noexcept;
+#endif
+
 			int rank_compare(var const&, var const&) noexcept;
 			char type_id(var const&) noexcept;
 			char const* type_string(var const&) noexcept;

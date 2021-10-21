@@ -67,6 +67,75 @@ namespace libletlib
 			return match_condition(_type, _expression);
 		}
 
+		bool match_pattern(var const& pattern, var const& matchee) noexcept {
+			std::size_t pattern_index = 0;
+			std::size_t match_index = 0;
+			var matchable = backing::list();
+			bool blueprint = false;
+			for(;pattern_index < pattern.size.in_use; ++pattern_index) {
+				if(match_index < matchee.size.in_use && matchee[match_index] == '(') {
+					blueprint = true;
+					matchable = backing::list();
+					++match_index;
+					for(;matchee[match_index] != ')' && match_index < matchee.size.in_use; ++match_index) {
+						if(matchee[match_index] == '#')
+						{
+							std::size_t slice_start = match_index;
+							match_index += 2;
+							for(;matchee[match_index] != ']' && match_index < matchee.size.in_use; ++match_index);
+							matchable += matchee.slice(slice_start, match_index+1);
+							continue;
+						}
+						else if(matchee[match_index] == '@')
+						{
+							std::size_t slice_start = match_index;
+							match_index += 2;
+							for(;matchee[match_index] != '}' && match_index < matchee.size.in_use; ++match_index);
+							matchable << matchee.slice(slice_start, match_index+1);
+							continue;
+						}
+						else {
+							matchable += matchee[match_index];
+							continue;
+						}
+					}
+					++match_index;
+				}
+				if(match_index < matchee.size.in_use && pattern[pattern_index] == matchee[match_index]) {
+					goto next;
+				} else if(blueprint) {
+					for(var const& candidate : matchable) {
+						if(pattern[pattern_index] == '#') {
+							var list_pattern = "";
+							for(;pattern[pattern_index] != ']' && pattern_index < pattern.size.in_use; ++pattern_index)
+								list_pattern += pattern[pattern_index];
+							list_pattern += pattern[pattern_index];
+							if(list_pattern == candidate) {
+								goto next;
+							}
+						} else if(pattern[pattern_index] == '@') {
+							var object_pattern = pattern[pattern_index];
+							for(;pattern[pattern_index] != '}' && pattern_index < pattern.size.in_use; ++pattern_index)
+								object_pattern += pattern[pattern_index];
+							object_pattern += pattern[pattern_index];
+							if(object_pattern == candidate) {
+								goto next;
+							}
+						} else if(pattern[pattern_index] == candidate) {
+							goto next;
+						}
+					}
+					return false;
+				} else {
+					return false;
+				}
+next:
+				if(match_index < matchee.size.in_use - 1)
+					++match_index;
+			}
+			return true;
+		}
+
 		/// \brief Class to facilitate pattern matching.
 		/// \tparam Size amount of match condition variables.
 		template<std::size_t Size>
@@ -106,7 +175,7 @@ namespace libletlib
                                                          libletlib::detail::make_index_sequence<Size> {});
 						matched = true;
 					}
-					else if (pattern == _condition.pattern || _condition.pattern == static_cast<char>(enum_any_type_id))
+					else if (match_pattern(pattern, _condition.pattern) || _condition.pattern == static_cast<char>(enum_any_type_id))
 					{
 						result  = var::flatten_and_invoke(_condition.expression, matchees,
                                                          libletlib::detail::make_index_sequence<Size> {});
