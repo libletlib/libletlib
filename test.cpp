@@ -708,7 +708,6 @@ int main()
 	} catch(std::domain_error const&) {
 	}
 #endif
-#endif
 
 	let ptrn1 = list(1, 2, 3, 4, 5, 6);
 	let ptrn2 = list(list(1, 2, 3), list(1, 2, 3));
@@ -735,6 +734,7 @@ int main()
 	std::cout << (rslt2 == 1 ? "YEY" : "NAY") << std::endl;
 	std::cout << (rslt3 == 1 ? "YEY" : "NAY") << std::endl;
 	std::cout << (rslt4 == 1 ? "YEY" : "NAY") << std::endl;
+#endif
 
 	return EXIT_SUCCESS;
 }
