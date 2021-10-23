@@ -664,27 +664,6 @@ int main()
 	let list0 = list(1, 2, 3);
 	let list1 = list(3, 2, 1, 4);
 
-	let ptrn = list(1, 2, 3, 4, 5, 6);
-	let ptrn2 = list(list(1, 2, 3), list(1, 2, 3));
-	let ptrn3 = list(list(1, 2), list(1, 2, 3));
-
-	let rslt = match(ptrn) with
-	    | "#[(i)]" ->* var(1)
-	    | otherwise ->* 0;
-
-	let rslt2 = match(ptrn2) with
-	           | "#[(#[iii])]" ->* var(1)
-	           | otherwise ->* 0;
-
-	let rslt3 = match(ptrn3) with
-	            | "#[(#[(i)])]" ->* var(1)
-	            | otherwise ->* 0;
-
-	println(rslt);
-	println(pattern(ptrn));
-	std::cout << (rslt2 == 1 ? "YEY" : "NAY") << std::endl;
-	std::cout << (rslt3 == 1 ? "YEY" : "NAY") << std::endl;
-
 	let match_test = match(list0, list1) with
 	                 | lambda(st != nd) ->* lambda(st)
 	                 | otherwise ->* lambda(nd);
@@ -730,5 +709,32 @@ int main()
 	}
 #endif
 #endif
+
+	let ptrn1 = list(1, 2, 3, 4, 5, 6);
+	let ptrn2 = list(list(1, 2, 3), list(1, 2, 3));
+	let ptrn3 = list(list(1, 2), list(1, 2, 3));
+	let ptrn4 = list(list(1), 1l, 1ul, 1ll, 1ull, 1.0f, 1.0, 1.0L);
+
+	let rslt1 = match(ptrn1) with
+	           | "#[(i)]" ->* var(1)
+	           | otherwise ->* 0;
+
+	let rslt2 = match(ptrn2) with
+	            | "#[(#[iii])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	let rslt3 = match(ptrn3) with
+	            | "#[(#[(i)])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	let rslt4 = match(ptrn4) with
+	            | "#[(DfdQqIlL#[i])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	std::cout << (rslt1 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt2 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt3 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt4 == 1 ? "YEY" : "NAY") << std::endl;
+
 	return EXIT_SUCCESS;
 }

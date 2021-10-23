@@ -203,7 +203,7 @@ namespace libletlib
 		/// \return array value of the argument.
 		LIBLETLIB_NODISCARD inline var string_as_array(var const& _value) noexcept
 		{
-			size_struct size = size_struct(string_length(_value.value.string_type));
+			size_struct size = size_struct(_value.size.in_use);
 			var* array       = allocate<var>(size.allocated);
 			for (std::size_t index = 0; index < size.in_use; ++index)
 			{
@@ -217,7 +217,7 @@ namespace libletlib
 		/// \return array value of the argument.
 		LIBLETLIB_NODISCARD inline var wide_string_as_array(var const& _value) noexcept
 		{
-			size_struct size = size_struct(string_length(_value.value.wide_string_type));
+			size_struct size = size_struct(_value.size.in_use / sizeof(wchar_t));
 			var* array       = allocate<var>(size.allocated);
 			for (std::size_t index = 0; index < size.in_use; ++index)
 			{
@@ -233,7 +233,7 @@ namespace libletlib
 		/// \return array value of the argument.
 		LIBLETLIB_NODISCARD inline var bit8_string_as_array(var const& _value) noexcept
 		{
-			size_struct size = size_struct(string_length(_value.value.bit8_string_type));
+			size_struct size = size_struct(_value.size.in_use / sizeof(char8_t));
 			var* array       = allocate<var>(size.allocated);
 			for (std::size_t index = 0; index < size.in_use; ++index)
 			{
@@ -248,7 +248,7 @@ namespace libletlib
 		/// \return array value of the argument.
 		LIBLETLIB_NODISCARD inline var bit16_string_as_array(var const& _value) noexcept
 		{
-			size_struct size = size_struct(string_length(_value.value.bit16_string_type));
+			size_struct size = size_struct(_value.size.in_use / sizeof(char16_t));
 			var* array       = allocate<var>(size.allocated);
 			for (std::size_t index = 0; index < size.in_use; ++index)
 			{
@@ -262,7 +262,7 @@ namespace libletlib
 		/// \return array value of the argument.
 		LIBLETLIB_NODISCARD inline var bit32_string_as_array(var const& _value) noexcept
 		{
-			size_struct size = size_struct(string_length(_value.value.bit32_string_type));
+			size_struct size = size_struct(_value.size.in_use / sizeof(char32_t));
 			var* array       = allocate<var>(size.allocated);
 			for (std::size_t index = 0; index < size.in_use; ++index)
 			{

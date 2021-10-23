@@ -411,7 +411,7 @@ namespace libletlib
 		{
 			if (_var.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list(_var);
+				var array = _var.behaviour->as_array(_var);
 				return var_iterator(array.value.array_type + array.size.in_use);
 			}
 			return var_iterator(_var.value.array_type + _var.size.in_use);

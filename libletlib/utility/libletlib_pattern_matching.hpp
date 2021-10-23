@@ -68,60 +68,66 @@ namespace libletlib
 		}
 
 		bool match_pattern(var const& pattern, var const& matchee) noexcept {
-			std::size_t pattern_index = 0;
-			std::size_t match_index = 0;
+			char const* const pattern_end = pattern.value.string_type+pattern.size.in_use;
+			char const* const matchee_end = matchee.value.string_type+matchee.size.in_use;
+			char const* pattern_ptr = pattern.value.string_type;
+			char const* matchee_ptr = matchee.value.string_type;
 			var matchable = backing::list();
-			bool blueprint = false;
-			for(;pattern_index < pattern.size.in_use; ++pattern_index) {
-				if(match_index < matchee.size.in_use && matchee[match_index] == '(') {
-					blueprint = true;
+			for(;pattern_ptr != pattern_end; ++pattern_ptr) {
+				if(matchee_ptr != matchee_end && *matchee_ptr == '(') {
 					matchable = backing::list();
-					++match_index;
-					for(;matchee[match_index] != ')' && match_index < matchee.size.in_use; ++match_index) {
-						if(matchee[match_index] == '#')
+					++matchee_ptr;
+					for(;*matchee_ptr != ')' && matchee_ptr != matchee_end; ++matchee_ptr) {
+						if(*matchee_ptr == '#')
 						{
-							std::size_t slice_start = match_index;
-							match_index += 2;
-							for(;matchee[match_index] != ']' && match_index < matchee.size.in_use; ++match_index);
-							matchable += matchee.slice(slice_start, match_index+1);
+							char const* const slice_start = matchee_ptr;
+							matchee_ptr += 2;
+							for(;*matchee_ptr != ']' && matchee_ptr != matchee_end; ++matchee_ptr);
+							matchable += matchee.slice(slice_start, matchee_ptr+1);
+							std::cout << matchee.slice(slice_start, matchee_ptr+1) << std::endl;
 							continue;
 						}
-						else if(matchee[match_index] == '@')
+						else if(*matchee_ptr == '@')
 						{
-							std::size_t slice_start = match_index;
-							match_index += 2;
-							for(;matchee[match_index] != '}' && match_index < matchee.size.in_use; ++match_index);
-							matchable << matchee.slice(slice_start, match_index+1);
+							char const* const slice_start = matchee_ptr;
+							matchee_ptr += 2;
+							for(;*matchee_ptr != '}' && matchee_ptr != matchee_end; ++matchee_ptr);
+							matchable += matchee.slice(slice_start, matchee_ptr+1);
 							continue;
 						}
 						else {
-							matchable += matchee[match_index];
+							matchable += *matchee_ptr;
 							continue;
 						}
 					}
-					++match_index;
+					++matchee_ptr;
 				}
-				if(match_index < matchee.size.in_use && pattern[pattern_index] == matchee[match_index]) {
+				if(matchee_ptr != matchee_end && *pattern_ptr == *matchee_ptr) {
 					goto next;
-				} else if(blueprint) {
+				} else if(matchable.size.in_use > 0) {
 					for(var const& candidate : matchable) {
-						if(pattern[pattern_index] == '#') {
+						if(candidate.behaviour->rank == enum_string_type && *pattern_ptr == '#') {
 							var list_pattern = "";
-							for(;pattern[pattern_index] != ']' && pattern_index < pattern.size.in_use; ++pattern_index)
-								list_pattern += pattern[pattern_index];
-							list_pattern += pattern[pattern_index];
-							if(list_pattern == candidate) {
+							char const* const slice_start = pattern_ptr;
+							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
+							list_pattern += pattern.slice(slice_start, pattern_ptr+1);
+							std::cout << "List pattern: " << list_pattern << std::endl;
+							std::cout << "Candidate: " << candidate << std::endl;
+							if(!string_compare(list_pattern.value.string_type, candidate.value.string_type)
+							    || (character_search(candidate.value.string_type, '(') && match_pattern(list_pattern, candidate)))
 								goto next;
-							}
-						} else if(pattern[pattern_index] == '@') {
-							var object_pattern = pattern[pattern_index];
-							for(;pattern[pattern_index] != '}' && pattern_index < pattern.size.in_use; ++pattern_index)
-								object_pattern += pattern[pattern_index];
-							object_pattern += pattern[pattern_index];
-							if(object_pattern == candidate) {
+
+						} else if(candidate.behaviour->rank == enum_string_type && *pattern == '@') {
+							var object_pattern = "";
+							char const* const slice_start = pattern_ptr;
+							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
+							object_pattern += pattern.slice(slice_start, pattern_ptr+1);
+
+							if(!string_compare(object_pattern.value.string_type, candidate.value.string_type)
+							    || (character_search(candidate.value.string_type, '(') && match_pattern(candidate, object_pattern)))
 								goto next;
-							}
-						} else if(pattern[pattern_index] == candidate) {
+
+						} else if(*pattern_ptr == candidate.value.char_type) {
 							goto next;
 						}
 					}
@@ -130,8 +136,8 @@ namespace libletlib
 					return false;
 				}
 next:
-				if(match_index < matchee.size.in_use - 1)
-					++match_index;
+				if(matchee_ptr+1 != matchee_end)
+					++matchee_ptr;
 			}
 			return true;
 		}

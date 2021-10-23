@@ -868,6 +868,38 @@ namespace libletlib
 			return std::wcsstr(haystack, needle);
 		}
 
+		/// \brief Replacement for std::strchr to char8_t, char16_t, and char32_t.
+		/// \tparam String type
+		/// \param haystack to search
+		/// \param needle to find
+		/// \return pointer to needle if exists, else nothing.
+		template<typename String, typename Character>
+		String* character_search(String* haystack, Character const needle)
+		{
+			while(*haystack && *haystack != needle) ++haystack;
+			return needle == *haystack ? haystack : nothing;
+		}
+
+		/// \brief Specialize substring_search to use standard library functions.
+		/// \param haystack to search.
+		/// \param needle to find.
+		/// \return pointer to needle if exists, else NULL.
+		template<>
+		char* character_search<char>(char* haystack, char const needle)
+		{
+			return std::strchr(haystack, needle);
+		}
+
+		/// \brief Specialize substring_search to use standard library functions.
+		/// \param haystack to search.
+		/// \param needle to find.
+		/// \return pointer to needle if exists, else NULL.
+		template<>
+		wchar_t* character_search<wchar_t>(wchar_t* haystack, wchar_t const needle)
+		{
+			return std::wcschr(haystack, needle);
+		}
+
 #endif
 	}// namespace detail
 }// namespace libletlib

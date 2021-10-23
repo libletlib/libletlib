@@ -2983,7 +2983,8 @@ namespace libletlib
 			{
 				this->value = value_union(_left, _left_length, _right_length + 1ul);
 				static_cast<void>(string_concatenate(this->value.string_type, _right, _right_length));
-				this->size      = size_struct(_left_length + _right_length + 1ul);
+				this->size      = size_struct(_left_length + _right_length,
+				                              _left_length + _right_length + 1ul);
 				this->behaviour = &string_behaviour;
 			}
 
@@ -2998,7 +2999,8 @@ namespace libletlib
 			{
 				this->value = value_union(_left, _left_length, (_right_length + 1ul) * sizeof(wchar_t));
 				static_cast<void>(string_concatenate(this->value.wide_string_type, _right, _right_length));
-				this->size      = size_struct((_left_length + _right_length + 1ul) * sizeof(wchar_t));
+				this->size      = size_struct((_left_length + _right_length) * sizeof(wchar_t),
+				                              (_left_length + _right_length + 1ul) * sizeof(wchar_t));
 				this->behaviour = &wide_string_behaviour;
 			}
 
@@ -3015,7 +3017,8 @@ namespace libletlib
 			{
 				this->value = value_union(_left, _left_length, (_right_length + 1ul) * sizeof(char8_t));
 				static_cast<void>(string_concatenate(this->value.bit8_string_type, _right, _right_length));
-				this->size      = size_struct((_left_length + _right_length + 1ul) * sizeof(char8_t));
+				this->size      = size_struct((_left_length + _right_length) * sizeof(char8_t),
+				                              (_left_length + _right_length + 1ul) * sizeof(char8_t));
 				this->behaviour = &bit8_string_behaviour;
 			}
 		#endif
@@ -3031,7 +3034,8 @@ namespace libletlib
 			{
 				this->value = value_union(_left, _left_length, (_right_length + 1ul) * sizeof(char16_t));
 				static_cast<void>(string_concatenate(this->value.bit16_string_type, _right, _right_length));
-				this->size      = size_struct((_left_length + _right_length + 1ul) * sizeof(char16_t));
+				this->size      = size_struct((_left_length + _right_length) * sizeof(char16_t),
+				                              (_left_length + _right_length + 1ul) * sizeof(char16_t));
 				this->behaviour = &bit16_string_behaviour;
 			}
 
@@ -3046,7 +3050,8 @@ namespace libletlib
 			{
 				this->value = value_union(_left, _left_length, (_right_length + 1ul) * sizeof(char32_t));
 				static_cast<void>(string_concatenate(this->value.bit32_string_type, _right, _right_length));
-				this->size      = size_struct((_left_length + _right_length + 1ul) * sizeof(char32_t));
+				this->size      = size_struct((_left_length + _right_length) * sizeof(char32_t),
+				                              (_left_length + _right_length + 1ul) * sizeof(char32_t));
 				this->behaviour = &bit32_string_behaviour;
 			}
 
@@ -4657,19 +4662,19 @@ namespace libletlib
 				if(this->behaviour->rank == enum_array_type)
 				{
 					part = backing::list();
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 				else if(this->behaviour->rank == enum_string_type)
 				{
 					part = "";
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 				else if(this->behaviour->rank == enum_wide_string_type)
 				{
 					part = L"";
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 			#if (__cplusplus >= 201103L)
@@ -4677,22 +4682,30 @@ namespace libletlib
 					#if (__cplusplus >= 202002L)
 				else if(this->behaviour->rank == enum_bit8_string_type) {
 					part = u8"";
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 					#endif
 				else if(this->behaviour->rank == enum_bit16_string_type) {
 					part = u"";
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 				else if(this->behaviour->rank == enum_bit32_string_type) {
 					part = U"";
-					for(; low < high; low++)
+					for(; low < high; ++low)
 						part += this->operator[](low);
 				}
 				#endif
 			#endif
+				return part;
+			}
+
+			template<>
+			LIBLETLIB_NODISCARD inline var slice(char const* low, char const* const high) const LIBLETLIB_NOEXCEPT {
+				var part = "";
+					for(; low != high; ++low)
+						part += *low;
 				return part;
 			}
 
