@@ -4701,14 +4701,6 @@ namespace libletlib
 				return part;
 			}
 
-			template<>
-			LIBLETLIB_NODISCARD inline var slice(char const* low, char const* const high) const LIBLETLIB_NOEXCEPT {
-				var part = "";
-					for(; low != high; ++low)
-						part += *low;
-				return part;
-			}
-
 			/// \brief Get possibly mutable reference to an element at an index.
 			/// \tparam Index type.
 			/// \param index of the element.
@@ -4746,6 +4738,14 @@ namespace libletlib
 			type_behaviour const* behaviour;///< Holds the behaviour of the fundamental type wrapped.
 #endif
 		};
+
+		template<>
+		LIBLETLIB_NODISCARD inline var var::slice(char const* low, char const* const high) const LIBLETLIB_NOEXCEPT {
+			var part = "";
+			for(; low != high; ++low)
+				part += *low;
+			return part;
+		}
 
 		namespace backing
 		{
