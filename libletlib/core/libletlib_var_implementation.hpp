@@ -353,6 +353,18 @@ namespace libletlib
 		}
 	#endif
 
+		/// \brief Copy memory from one pointer to another.
+		/// \param low pointer to start copying from.
+		/// \param high pointer to copy to (exclusive).
+		/// \return var containing the copied memory as string.
+		template<>
+		LIBLETLIB_NODISCARD inline var var::slice(char const* low, char const* const high) const LIBLETLIB_NOEXCEPT {
+			var part = "";
+			for(; low != high; ++low)
+				part += *low;
+			return part;
+		}
+
 #endif
 	}// namespace detail
 }// namespace libletlib

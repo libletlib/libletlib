@@ -715,19 +715,19 @@ int main()
 	let ptrn4 = list(list(1), 1l, 1ul, 1ll, 1ull, 1.0f, 1.0, 1.0L);
 
 	let rslt1 = match(ptrn1) with
-	           | "#[(i)]" ->* var(1)
+	           | "#[(i)]" ->* var(1) //A list of any number of ints.
 	           | otherwise ->* 0;
 
 	let rslt2 = match(ptrn2) with
-	            | "#[(#[iii])]" ->* var(1)
+	            | "#[(#[iii])]" ->* var(1) //List of lists of three ints.
 	            | otherwise ->* 0;
 
 	let rslt3 = match(ptrn3) with
-	            | "#[(#[(i)])]" ->* var(1)
+	            | "#[(#[(i)])]" ->* var(1) //List of any number of lists with any number of ints.
 	            | otherwise ->* 0;
 
 	let rslt4 = match(ptrn4) with
-	            | "#[(DfdQqIlL#[i])]" ->* var(1)
+	            | "#[(sSDfdQqIlL#[i(i)])]" ->* var(1) // Any number, except int, and arrays with at least one int.
 	            | otherwise ->* 0;
 
 	std::cout << (rslt1 == 1 ? "YEY" : "NAY") << std::endl;
