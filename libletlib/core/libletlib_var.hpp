@@ -2712,40 +2712,40 @@ namespace libletlib
 
 			/// \brief Constructor for bool value.
 			///
-			///	\param value to wrap.
-			var(bool const value) noexcept
+			///	\param wrap to wrap.
+			var(bool const wrap) noexcept
 			{
-				this->value.bool_type = value;
+				this->value.bool_type = wrap;
 				this->size            = size_struct();
 				this->behaviour       = &boolean_behaviour;
 			}
 
 			/// \brief Constructor for char value.
 			///
-			///	\param value to wrap.
-			var(char const value) noexcept
+			///	\param wrap to wrap.
+			var(char const wrap) noexcept
 			{
-				this->value.char_type = value;
+				this->value.char_type = wrap;
 				this->size            = size_struct();
 				this->behaviour       = &character_behaviour;
 			}
 
 			/// \brief Constructor for signed char value.
 			///
-			///	\param value to wrap.
-			var(signed char const value) noexcept
+			///	\param wrap to wrap.
+			var(signed char const wrap) noexcept
 			{
-				this->value.signed_char_type = value;
+				this->value.signed_char_type = wrap;
 				this->size                   = size_struct();
 				this->behaviour              = &signed_character_behaviour;
 			}
 
 			/// \brief Constructor for unsigned char value.
 			///
-			///	\param value to wrap.
-			var(unsigned char const value) noexcept
+			///	\param wrap to wrap.
+			var(unsigned char const wrap) noexcept
 			{
-				this->value.unsigned_char_type = value;
+				this->value.unsigned_char_type = wrap;
 				this->size                     = size_struct();
 				this->behaviour                = &unsigned_character_behaviour;
 			}
@@ -2754,10 +2754,10 @@ namespace libletlib
 
 			/// \brief Constructor for wchar_t value.
 			///
-			///	\param value to wrap.
-			var(wchar_t const value) noexcept
+			///	\param wrap to wrap.
+			var(wchar_t const wrap) noexcept
 			{
-				this->value.wchar_type = value;
+				this->value.wchar_type = wrap;
 				this->size             = size_struct();
 				this->behaviour        = &wide_character_behaviour;
 			}
@@ -2776,20 +2776,20 @@ namespace libletlib
 		#endif
 			/// \brief Constructor for char16_t value.
 			///
-			///	\param value to wrap.
-			var(char16_t const value) noexcept
+			///	\param wrap to wrap.
+			var(char16_t const wrap) noexcept
 			{
-				this->value.char16_type = value;
+				this->value.char16_type = wrap;
 				this->size              = size_struct(sizeof(char16_t));
 				this->behaviour         = &bit16_character_behaviour;
 			}
 
 			/// \brief Constructor for char32_t value.
 			///
-			///	\param value to wrap.
-			var(char32_t const value) noexcept
+			///	\param wrap to wrap.
+			var(char32_t const wrap) noexcept
 			{
-				this->value.char32_type = value;
+				this->value.char32_type = wrap;
 				this->size              = size_struct(sizeof(char32_t));
 				this->behaviour         = &bit32_character_behaviour;
 			}
@@ -2799,60 +2799,60 @@ namespace libletlib
 
 			/// \brief Constructor for short value.
 			///
-			///	\param value to wrap.
-			var(short const value) noexcept
+			///	\param wrap to wrap.
+			var(short const wrap) noexcept
 			{
-				this->value.short_type = value;
+				this->value.short_type = wrap;
 				this->size             = size_struct();
 				this->behaviour        = &short_behaviour;
 			}
 
 			/// \brief Constructor for unsigned short value.
 			///
-			///	\param value to wrap.
-			var(unsigned short const value) noexcept
+			///	\param wrap to wrap.
+			var(unsigned short const wrap) noexcept
 			{
-				this->value.unsigned_short_type = value;
+				this->value.unsigned_short_type = wrap;
 				this->size                      = size_struct();
 				this->behaviour                 = &unsigned_short_behaviour;
 			}
 
 			/// \brief Constructor for int value.
 			///
-			///	\param value to wrap.
-			var(int const value) noexcept
+			///	\param wrap to wrap.
+			var(int const wrap) noexcept
 			{
-				this->value.int_type = value;
+				this->value.int_type = wrap;
 				this->size           = size_struct();
 				this->behaviour      = &integer_behaviour;
 			}
 
 			/// \brief Constructor for unsigned int value.
 			///
-			///	\param value to wrap.
-			var(unsigned const value) noexcept
+			///	\param wrap to wrap.
+			var(unsigned const wrap) noexcept
 			{
-				this->value.unsigned_int_type = value;
+				this->value.unsigned_int_type = wrap;
 				this->size                    = size_struct();
 				this->behaviour               = &unsigned_integer_behaviour;
 			}
 
 			/// \brief Constructor for long value.
 			///
-			///	\param value to wrap.
-			var(long const value) noexcept
+			///	\param wrap to wrap.
+			var(long const wrap) noexcept
 			{
-				this->value.long_type = value;
+				this->value.long_type = wrap;
 				this->size            = size_struct();
 				this->behaviour       = &long_behaviour;
 			}
 
 			/// \brief Constructor for unsigned long value.
 			///
-			///	\param value to wrap.
-			var(unsigned long const value) noexcept
+			///	\param wrap to wrap.
+			var(unsigned long const wrap) noexcept
 			{
-				this->value.unsigned_long_type = value;
+				this->value.unsigned_long_type = wrap;
 				this->size                     = size_struct();
 				this->behaviour                = &unsigned_long_behaviour;
 			}
@@ -2861,20 +2861,20 @@ namespace libletlib
 
 			/// \brief Constructor for long long value.
 			///
-			///	\param value to wrap.
-			var(long long const value) noexcept
+			///	\param wrap to wrap.
+			var(long long const wrap) noexcept
 			{
-				this->value.long_long_type = value;
+				this->value.long_long_type = wrap;
 				this->size                 = size_struct();
 				this->behaviour            = &long_long_behaviour;
 			}
 
 			/// \brief Constructor for unsigned long long value.
 			///
-			///	\param value to wrap.
-			var(unsigned long long const value) noexcept
+			///	\param wrap to wrap.
+			var(unsigned long long const wrap) noexcept
 			{
-				this->value.unsigned_long_long_type = value;
+				this->value.unsigned_long_long_type = wrap;
 				this->size                          = size_struct();
 				this->behaviour                     = &unsigned_long_long_behaviour;
 			}
@@ -2883,30 +2883,30 @@ namespace libletlib
 
 			/// \brief Constructor for float value.
 			///
-			///	\param value to wrap.
-			var(float const value) noexcept
+			///	\param wrap to wrap.
+			var(float const wrap) noexcept
 			{
-				this->value.float_type = value;
+				this->value.float_type = wrap;
 				this->size             = size_struct();
 				this->behaviour        = &float_behaviour;
 			}
 
 			/// \brief Constructor for double value.
 			///
-			///	\param value to wrap.
-			var(double const value) noexcept
+			///	\param wrap to wrap.
+			var(double const wrap) noexcept
 			{
-				this->value.double_type = value;
+				this->value.double_type = wrap;
 				this->size              = size_struct();
 				this->behaviour         = &double_behaviour;
 			}
 
 			/// \brief Constructor for long double value.
 			///
-			///	\param value to wrap.
-			var(long double const value) noexcept
+			///	\param wrap to wrap.
+			var(long double const wrap) noexcept
 			{
-				this->value.long_double_type = value;
+				this->value.long_double_type = wrap;
 				this->size                   = size_struct();
 				this->behaviour              = &long_double_behaviour;
 			}
@@ -2915,22 +2915,22 @@ namespace libletlib
 
 			/// \brief Constructor for raw string value.
 			///
-			///	\param value to wrap.
-			var(char const* const value) noexcept
+			///	\param wrap to wrap.
+			var(char const* const wrap) noexcept
 			{
-				this->value              = value_union(value);
-				std::size_t const length = string_length(value);
+				this->value              = value_union(wrap);
+				std::size_t const length = string_length(wrap);
 				this->size               = size_struct(length, length + 1);
 				this->behaviour          = &string_behaviour;
 			}
 
 			/// \brief Constructor for wide string value.
 			///
-			///	\param value to wrap.
-			var(wchar_t const* const value) noexcept
+			///	\param wrap to wrap.
+			var(wchar_t const* const wrap) noexcept
 			{
-				this->value              = value_union(value);
-				std::size_t const length = string_length(value) * sizeof(wchar_t);
+				this->value              = value_union(wrap);
+				std::size_t const length = string_length(wrap) * sizeof(wchar_t);
 				this->size               = size_struct(length, length + sizeof(wchar_t));
 				this->behaviour          = &wide_string_behaviour;
 			}
@@ -2950,22 +2950,22 @@ namespace libletlib
 		#endif
 			/// \brief Constructor for 16 bit string value.
 			///
-			///	\param value to wrap.
-			var(char16_t const* const value) noexcept
+			///	\param wrap to wrap.
+			var(char16_t const* const wrap) noexcept
 			{
-				this->value              = value_union(value);
-				std::size_t const length = string_length(value) * sizeof(char16_t);
+				this->value              = value_union(wrap);
+				std::size_t const length = string_length(wrap) * sizeof(char16_t);
 				this->size               = size_struct(length, length + sizeof(char16_t));
 				this->behaviour          = &bit16_string_behaviour;
 			}
 
 			/// \brief Constructor for 32 bit string value.
 			///
-			///	\param value to wrap.
-			var(char32_t const* const value) noexcept
+			///	\param wrap to wrap.
+			var(char32_t const* const wrap) noexcept
 			{
-				this->value              = value_union(value);
-				std::size_t const length = string_length(value) * sizeof(char32_t);
+				this->value              = value_union(wrap);
+				std::size_t const length = string_length(wrap) * sizeof(char32_t);
 				this->size               = size_struct(length, length + sizeof(char32_t));
 				this->behaviour          = &bit32_string_behaviour;
 			}
@@ -3115,10 +3115,10 @@ namespace libletlib
 			/// \brief Constructor for void pointer value.
 			///
 			///	\param value to wrap.
-			var(void* value) noexcept
+			var(void* wrap) noexcept
 			{
 				this->size                    = size_struct();
-				this->value.void_pointer_type = value;
+				this->value.void_pointer_type = wrap;
 				this->behaviour               = &pointer_behaviour;
 			}
 
@@ -3127,40 +3127,40 @@ namespace libletlib
 			/// \brief Constructor for subroutine type.
 			///
 			/// \param value to wrap.
-			var(subroutine_t value) noexcept
+			var(subroutine_t wrap) noexcept
 			{
 				this->size                  = size_struct();
-				this->value.subroutine_type = value;
+				this->value.subroutine_type = wrap;
 				this->behaviour             = &subroutine_behaviour;
 			}
 
 			/// \brief Constructor for function type.
 			///
 			/// \param value to wrap.
-			var(function_t value) noexcept
+			var(function_t wrap) noexcept
 			{
 				this->size                = size_struct();
-				this->value.function_type = value;
+				this->value.function_type = wrap;
 				this->behaviour           = &function_behaviour;
 			}
 
 			/// \brief Constructor for subroutine type.
 			///
-			/// \param _value to wrap.
-			var(subroutine_t _value, std::size_t _curry) noexcept
+			/// \param _wrap to wrap.
+			var(subroutine_t _wrap, std::size_t _curry) noexcept
 			{
 				this->size                  = size_struct(_curry);
-				this->value.subroutine_type = _value;
+				this->value.subroutine_type = _wrap;
 				this->behaviour             = &subroutine_behaviour;
 			}
 
 			/// \brief Constructor for function type.
 			///
-			/// \param _value to wrap.
-			var(function_t _value, std::size_t _curry) noexcept
+			/// \param _wrap to wrap.
+			var(function_t _wrap, std::size_t _curry) noexcept
 			{
 				this->size                = size_struct(_curry);
-				this->value.function_type = _value;
+				this->value.function_type = _wrap;
 				this->behaviour           = &function_behaviour;
 			}
 
@@ -3171,10 +3171,10 @@ namespace libletlib
 			/// \brief Constructor for nullptr_t value.
 			///
 			///	\param _value to wrap.
-			var(std::nullptr_t const value) noexcept
+			var(std::nullptr_t const wrap) noexcept
 			{
 				this->size               = size_struct();
-				this->value.nullptr_type = value;
+				this->value.nullptr_type = wrap;
 				this->behaviour          = &null_behaviour;
 			}
 
@@ -4653,51 +4653,47 @@ namespace libletlib
 			template<typename String>
 			var& message(String) const noexcept;
 
+			/// \brief Copy a range of var values.
+			/// \tparam Low number converitble to index.
+			/// \tparam High number convertible to index.
+			/// \param low index to start copying from.
+			/// \param high index to end copying (exclusive).
+			/// \return var containing the copied range of values.
 			template<typename Low, typename High>
 			LIBLETLIB_NODISCARD inline var slice(Low low, High const high) const LIBLETLIB_NOEXCEPT {
 				if(low >= high)
 					return nothing;
 				var part;
-
-				if(this->behaviour->rank == enum_array_type)
-				{
-					part = backing::list();
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-				else if(this->behaviour->rank == enum_string_type)
-				{
-					part = "";
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-				else if(this->behaviour->rank == enum_wide_string_type)
-				{
-					part = L"";
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-			#if (__cplusplus >= 201103L)
-				#ifndef LIBLETLIB_DISABLE_UCHAR
-					#if (__cplusplus >= 202002L)
-				else if(this->behaviour->rank == enum_bit8_string_type) {
-					part = u8"";
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-					#endif
-				else if(this->behaviour->rank == enum_bit16_string_type) {
-					part = u"";
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-				else if(this->behaviour->rank == enum_bit32_string_type) {
-					part = U"";
-					for(; low < high; ++low)
-						part += this->operator[](low);
-				}
-				#endif
+				switch(this->behaviour->rank) {
+					case enum_array_type:
+						part = backing::list();
+						break;
+					case enum_string_type:
+						part = "";
+						break;
+					case enum_wide_string_type:
+						part = L"";
+						break;
+	#if (__cplusplus >= 201103L)
+		#ifndef LIBLETLIB_DISABLE_UCHAR
+			#if (__cplusplus >= 202002L)
+					case enum_bit8_string_type:
+						part = u8"";
+						break;
 			#endif
+					case enum_bit16_string_type:
+						part = u"";
+						break;
+					case enum_bit32_string_type:
+						part = U"";
+						break;
+		#endif
+	#endif
+					default:
+						return *this;
+				}
+				for(; low < high; ++low)
+					part += this->operator[](low);
 				return part;
 			}
 
@@ -4738,14 +4734,6 @@ namespace libletlib
 			type_behaviour const* behaviour;///< Holds the behaviour of the fundamental type wrapped.
 #endif
 		};
-
-		template<>
-		LIBLETLIB_NODISCARD inline var var::slice(char const* low, char const* const high) const LIBLETLIB_NOEXCEPT {
-			var part = "";
-			for(; low != high; ++low)
-				part += *low;
-			return part;
-		}
 
 		namespace backing
 		{

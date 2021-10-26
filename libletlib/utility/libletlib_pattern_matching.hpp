@@ -67,11 +67,15 @@ namespace libletlib
 			return match_condition(_type, _expression);
 		}
 
-		bool match_pattern(var const& pattern, var const& matchee) noexcept {
-			char const* const pattern_end = pattern.value.string_type+pattern.size.in_use;
-			char const* const matchee_end = matchee.value.string_type+matchee.size.in_use;
-			char const* pattern_ptr = pattern.value.string_type;
-			char const* matchee_ptr = matchee.value.string_type;
+		/// \brief Test matching of shape of data against a _pattern.
+		/// \param _pattern to match.
+		/// \param _matchee trying to match.
+		/// \return true if matches, false if doesn't.
+		bool match_pattern(var const& _pattern, var const& _matchee) noexcept {
+			char const* const pattern_end = _pattern.value.string_type+ _pattern.size.in_use;
+			char const* const matchee_end = _matchee.value.string_type+ _matchee.size.in_use;
+			char const* pattern_ptr = _pattern.value.string_type;
+			char const* matchee_ptr = _matchee.value.string_type;
 			var matchable = backing::list();
 			for(;pattern_ptr != pattern_end; ++pattern_ptr) {
 				if(matchee_ptr != matchee_end && *matchee_ptr == '(') {
@@ -83,8 +87,7 @@ namespace libletlib
 							char const* const slice_start = matchee_ptr;
 							matchee_ptr += 2;
 							for(;*matchee_ptr != ']' && matchee_ptr != matchee_end; ++matchee_ptr);
-							matchable += matchee.slice(slice_start, matchee_ptr+1);
-							std::cout << matchee.slice(slice_start, matchee_ptr+1) << std::endl;
+							matchable += _matchee.slice(slice_start, matchee_ptr+1);
 							continue;
 						}
 						else if(*matchee_ptr == '@')
@@ -92,7 +95,7 @@ namespace libletlib
 							char const* const slice_start = matchee_ptr;
 							matchee_ptr += 2;
 							for(;*matchee_ptr != '}' && matchee_ptr != matchee_end; ++matchee_ptr);
-							matchable += matchee.slice(slice_start, matchee_ptr+1);
+							matchable += _matchee.slice(slice_start, matchee_ptr+1);
 							continue;
 						}
 						else {
@@ -110,18 +113,16 @@ namespace libletlib
 							var list_pattern = "";
 							char const* const slice_start = pattern_ptr;
 							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
-							list_pattern += pattern.slice(slice_start, pattern_ptr+1);
-							std::cout << "List pattern: " << list_pattern << std::endl;
-							std::cout << "Candidate: " << candidate << std::endl;
+							list_pattern += _pattern.slice(slice_start, pattern_ptr + 1);
 							if(!string_compare(list_pattern.value.string_type, candidate.value.string_type)
 							    || (character_search(candidate.value.string_type, '(') && match_pattern(list_pattern, candidate)))
 								goto next;
 
-						} else if(candidate.behaviour->rank == enum_string_type && *pattern == '@') {
+						} else if(candidate.behaviour->rank == enum_string_type && *_pattern == '@') {
 							var object_pattern = "";
 							char const* const slice_start = pattern_ptr;
 							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
-							object_pattern += pattern.slice(slice_start, pattern_ptr+1);
+							object_pattern += _pattern.slice(slice_start, pattern_ptr + 1);
 
 							if(!string_compare(object_pattern.value.string_type, candidate.value.string_type)
 							    || (character_search(candidate.value.string_type, '(') && match_pattern(candidate, object_pattern)))
@@ -136,7 +137,7 @@ namespace libletlib
 					return false;
 				}
 next:
-				if(matchee_ptr+1 != matchee_end)
+				if(matchee_ptr + 1 != matchee_end)
 					++matchee_ptr;
 			}
 			return true;
