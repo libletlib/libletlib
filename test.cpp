@@ -552,11 +552,13 @@ inline void TestOperation<char32_t const*, char32_t const*>(char32_t const* left
 #endif
 
 type(Foo) contains(
+    constructor()
     member(msg) = list("Hello", "World", '!')
     member(println) = []subroutine(std::cout << st + " " + nd + rd << std::endl;)
 )
 
 type(Bar) contains(
+    constructor()
     member(foo) = "Foo"
 	member(bar) = [&]function(return this->message("foo");)
 )
@@ -576,11 +578,12 @@ let println = []subroutine(
 
 type(Vector)
     contains(
-	member(Vector) = [&]subroutine (
+	constructor(
             message("x") = st;
                   message("y") = nd;
                   message("z") = rd;
         )
+    member(msg) = "Hello"
 )
 
 int main()
@@ -745,6 +748,7 @@ int main()
 	std::cout << (rslt4 == 1 ? "YEY" : "NAY") << std::endl;
 
 	let vec = construct(Vector) with (1, 2, 3);
+	let vec2 = new Vector;
 	println(vec);
 #endif
 

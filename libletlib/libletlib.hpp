@@ -748,7 +748,7 @@ namespace libletlib
 				/// \def match
 				/// Create pattern matching object.
 				#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
-				/// \def with
+				/// \def against
 				/// Finalise pattern matching object.
 				#define against )
 				/// \def otherwise
@@ -812,7 +812,7 @@ namespace libletlib
 					public:                                                                                            \
 						Name()                                                                                         \
 						{                                                                                              \
-							inner = { {"name", #Name}
+							inner = { libletlib::detail::field(#Name)
 
 				/// \def contains
 				/// Include fields in this object.
@@ -824,17 +824,25 @@ namespace libletlib
 					}                                                                                                  \
 					;
 
-				#define construct(name) [](LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) -> var {\
-                    var base = new name;\
-					base.message(#name)
+				/// \def constructor
+				/// Define the constructor of this object.
+				#define constructor(code) = [&]subroutine(code)
 
+				/// \def construct
+				/// Call the constructor of an object (the field that has the name of the object, it must be invokable.
+				#define construct(Name) [](LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) -> var {\
+                    var base = new Name;\
+					base.message(#Name)
+
+				/// \def with
+				/// For giving the construct macro its arguments.
 				#define with(...) (__VA_ARGS__); \
 									return base;}++()
-			#endif
 
-			/// \def member
-			/// Creates a field in a libletlib object.
-			#define member(key) , libletlib::detail::field(#key)
+				/// \def member
+				/// Creates a field in a libletlib object.
+				#define member(key) , libletlib::detail::field(#key)
+			#endif
 		#endif
 	#endif
 

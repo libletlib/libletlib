@@ -346,9 +346,6 @@ namespace libletlib
 		template<>
 		LIBLETLIB_NODISCARD inline var& var::message<var const&>(var const& string) const noexcept
 		{
-			//char* const real_string = string.behaviour->as_string(string);
-			//var& result             = this->objectify()->message(string);
-			//deallocate(real_string);
 			return this->objectify()->message(string);
 		}
 	#endif
