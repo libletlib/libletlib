@@ -826,10 +826,9 @@ namespace libletlib
 
 				#define construct(name) [](LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) -> var {\
                     var base = new name;\
-					base.message(#name).apply<
+					base.message(#name)
 
-				#define with(...) libletlib::detail::count_arguments(__VA_ARGS__)>( \
-						                  libletlib::detail::backing::list(__VA_ARGS__)); \
+				#define with(...) (__VA_ARGS__); \
 									return base;}++()
 			#endif
 
