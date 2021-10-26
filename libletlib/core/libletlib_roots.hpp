@@ -43,7 +43,7 @@ namespace libletlib
 	{
 
 		/// \brief Represents an empty value.
-		var empty_value = var();
+		var const empty_value = var();
 
 #if (__cplusplus >= 201103L)
 	#ifndef LIBLETLIB_FREESTANDING
@@ -55,13 +55,12 @@ namespace libletlib
 		{
 			for (var& pair : _target)
 			{
-				std::cout << pair.at(0) << " " << pair.at(1) << std::endl;
 				if (pair.at(0) == _key)
 				{
 					return pair.at(1);
 				}
 			}
-			return empty_value;
+			return const_cast<var&>(empty_value);
 		}
 
 		/// \brief Root type all objects are casted to.
@@ -92,7 +91,7 @@ namespace libletlib
 			{
 				var& result = libletlib::detail::property_reference(this->inner, key);
 				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
-					return libletlib::detail::empty_value;
+					this->inner = this->inner += backing::list(key, var());
 				else
 					return result;
 				return libletlib::detail::property_reference(this->inner, key);
@@ -130,9 +129,6 @@ namespace libletlib
 				return new Inheritor(*static_cast<Inheritor const*>(this));
 			}
 
-			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD Inheritor const* self() const noexcept {
-				return static_cast<Inheritor const*>(this);
-			}
 		};
 
 		class Var final : public Root<Var>
@@ -148,6 +144,7 @@ namespace libletlib
 				inner = {{"name", "Var"}, {"value", value}};
 			}
 		};
+
 	#endif
 #endif
 	}// namespace detail

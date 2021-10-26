@@ -750,7 +750,7 @@ namespace libletlib
 				#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
 				/// \def with
 				/// Finalise pattern matching object.
-				#define with )
+				#define against )
 				/// \def otherwise
 				/// Match any pattern.
 				#define otherwise libletlib::detail::any_type_pattern
@@ -823,6 +823,14 @@ namespace libletlib
 					}                                                                                                  \
 					}                                                                                                  \
 					;
+
+				#define construct(name) [](LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) -> var {\
+                    var base = new name;\
+					base.message(#name).apply<
+
+				#define with(...) libletlib::detail::count_arguments(__VA_ARGS__)>( \
+						                  libletlib::detail::backing::list(__VA_ARGS__)); \
+									return base;}++()
 			#endif
 
 			/// \def member

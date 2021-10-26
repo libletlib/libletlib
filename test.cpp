@@ -558,7 +558,7 @@ type(Foo) contains(
 
 type(Bar) contains(
     member(foo) = "Foo"
-	member(bar) = [&]function(return this->self()->message("name");)
+	member(bar) = [&]function(return this->message("foo");)
 )
 
 let print = []subroutine(
@@ -573,6 +573,15 @@ let println = []subroutine(
     }
     std::cout << std::endl;
 );
+
+type(Vector)
+    contains(
+	member(Vector) = [&]subroutine (
+            message("x") = st;
+                  message("y") = nd;
+                  message("z") = rd;
+        )
+)
 
 int main()
 {
@@ -664,7 +673,7 @@ int main()
 	let list0 = list(1, 2, 3);
 	let list1 = list(3, 2, 1, 4);
 
-	let match_test = match(list0, list1) with
+	let match_test = match(list0, list1) against
 	                 | lambda(st != nd) ->* lambda(st)
 	                 | otherwise ->* lambda(nd);
 
@@ -714,19 +723,19 @@ int main()
 	let ptrn3 = list(list(1, 2), list(1, 2, 3));
 	let ptrn4 = list(list(1), 1l, 1ul, 1ll, 1ull, 1.0f, 1.0, 1.0L);
 
-	let rslt1 = match(ptrn1) with
+	let rslt1 = match(ptrn1) against
 	           | "#[(i)]" ->* var(1)
 	           | otherwise ->* 0;
 
-	let rslt2 = match(ptrn2) with
+	let rslt2 = match(ptrn2) against
 	            | "#[(#[iii])]" ->* var(1)
 	            | otherwise ->* 0;
 
-	let rslt3 = match(ptrn3) with
+	let rslt3 = match(ptrn3) against
 	            | "#[(#[(i)])]" ->* var(1)
 	            | otherwise ->* 0;
 
-	let rslt4 = match(ptrn4) with
+	let rslt4 = match(ptrn4) against
 	            | "#[(DfdQqIlL#[i])]" ->* var(1)
 	            | otherwise ->* 0;
 
@@ -734,6 +743,9 @@ int main()
 	std::cout << (rslt2 == 1 ? "YEY" : "NAY") << std::endl;
 	std::cout << (rslt3 == 1 ? "YEY" : "NAY") << std::endl;
 	std::cout << (rslt4 == 1 ? "YEY" : "NAY") << std::endl;
+
+	let vec = construct(Vector) with (1, 2, 3);
+	println(vec);
 #endif
 
 	return EXIT_SUCCESS;
