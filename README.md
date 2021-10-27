@@ -28,11 +28,14 @@ LibLetLib pollutes the global namespace by default with a few macros.
 * ```Subroutine``` (Utility)
 * ```function``` (Lambda capture and conversion to function pointer infrastructure)
 * ```Function``` (Utility)
-* ```type``` (Utility, injects "self" field to every object)
+* ```type``` (Utility to define objects with proper inheritance)
 * ```contains``` (Utility in conjuction with ```type```)
+* ```constructor``` (Utility in conjuction with ```contains```)
+* ```construct``` (Utility to call constructor)
+* ```with``` (Utility in conjuction with ```construct```)
 * ```member``` (Utility in conjuction with ```type```)
-* ```match``` (Utility)
-* ```with``` (Utility in conjuction with ```match```)
+* ```match``` (Utility for pattern matching)
+* ```against``` (Utility in conjuction with ```match```)
 * ```otherwise``` (Utility in conjuction with ```match```)
 * ```st``` (Utility, first argument of function)
 * ```nd``` (Utility, second argument of function)
@@ -198,16 +201,22 @@ in the order they were given to it.
 let foo = list(1, "2", lambda(3));
 let bar = list(1, "3", lambda(2));
 
-let result = match(foo, bar) with // result = [1, "2", function(return 3;)]
+let result = match(foo, bar) against // result = [1, "2", function(return 3;)]
     | lambda(st != nd) ->* lambda(st) // This branch will be selected.
     | otherwise ->* lambda(nd);
 
 let oof = 3;
 let rab = 2.5;
 
-let result2 = match(oof, rab) with // result2 = 3
+let result2 = match(oof, rab) against // result2 = 3
 	| lambda(st < nd) ->* lambda(nd)
 	| otherwise ->* lambda(st); //This branch will be selected, because nd < st.
+	
+let lists = list(list(1, 2), list(1, 2, 3));
+
+let result3 = match(lists) against
+    | "#[(#[(i)])]" ->* var(true) //Match for list of lists of only integers.
+    | otherwise ->* false;
 ```
 
 # Classes and Objects
@@ -246,14 +255,18 @@ Classes can be defined using macros or by hand. The declarations for class Foo b
 ```c++
 type(Foo)
     contains(
+		constructor(
+			message("x") = 1;
+			)
+			
     	    member(msg) = "Hello World!"
-    	)
+    )
 
     	
 class Foo final : public Root<Foo> {
 	Foo() {
 		inner = {
-			{"name", "Foo"},
+			{"Foo", [&]subroutine(this->message("x") = 1;)},
 			{"msg", "Hello World!"},
 		};
 	}
@@ -269,6 +282,10 @@ according to RAII principles.
 type(Foo)
     contains
     (
+		constructor(
+			message("onlyConstructed") = st;
+			)
+		
         member(func) = lambda(st + nd)
     )
     
@@ -276,6 +293,8 @@ int main(void)
 {
     let foo = new Foo;
     std::cout << foo.message("func")(2, 2) << std::endl; // 4
+	let foo2 = construct(Foo) with(true);
+	std::cout << foo2.message("onlyConstructed") << std::endl; // true
     return 0;
 }    
 ```
@@ -289,6 +308,7 @@ is to use the ```objectify()``` and then using ```MetaRoot``` method ```message(
 type(Foo)
     contains
     (
+		constructor()
         member(msg) = "Hello World!"
     )
     
@@ -310,6 +330,7 @@ operator overload of the left side of binary operators involving multiple object
 ```c++
 type(Foo)
     contains(
+		constructor()
     	    member(+) = lambda(st.message(name) + nd.message(name))
     	)
     	
@@ -464,6 +485,7 @@ using namespace libletlib;
 
 // A LibLetLib class with name of Foo.
 type(Foo) contains(
+	constructor()
 	// Contains member + that overloads binary + operator for this class.
 	// In LibLetLib all function arguments are provided in an array called args.
 	// For convenience the first three arguments can be accessed through the macros 
