@@ -104,6 +104,30 @@ namespace libletlib
 			{
 				return libletlib::detail::property_reference(this->inner, key);
 			}
+
+			/// \brief Get a const reference to a member by its key.
+			/// \param key of member to property.
+			/// \return const reference to the member pointed to by its key.
+			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD inline var const& fetch(char const* const key) const noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					return libletlib::detail::empty_value;
+				else
+					return result;
+			}
+
+			/// \brief If a property with a key exists.
+			/// \param key of member to property.
+			/// \return true if exists, otherwise false.
+			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD inline bool has(char const* const key) const noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					return false;
+				else
+					return true;
+			}
 		};
 
 		/// \brief "Reverse" inheriting class via Curiously Recurring Template Pattern
@@ -131,19 +155,7 @@ namespace libletlib
 
 		};
 
-		class Var final : public Root<Var>
-		{
-		public:
-			Var()
-			{
-				inner = {{"name", "Var"}, {"value", var()}};
-			}
-
-			explicit Var(var const& value)
-			{
-				inner = {{"name", "Var"}, {"value", value}};
-			}
-		};
+		class Var;
 
 	#endif
 #endif

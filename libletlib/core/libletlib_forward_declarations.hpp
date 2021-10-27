@@ -87,7 +87,6 @@ namespace libletlib
 	#endif
 		inline void bit16_string_deallocate(var const& _value) noexcept;
 		inline void bit32_string_deallocate(var const& _value) noexcept;
-
 #endif
 		template<typename Type>
 		void deallocate(Type* _pointer) noexcept;

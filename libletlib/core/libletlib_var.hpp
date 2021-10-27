@@ -3114,7 +3114,7 @@ namespace libletlib
 
 			/// \brief Constructor for void pointer value.
 			///
-			///	\param value to wrap.
+			///	\param wrap to wrap.
 			var(void* wrap) noexcept
 			{
 				this->size                    = size_struct();
@@ -3126,7 +3126,7 @@ namespace libletlib
 
 			/// \brief Constructor for subroutine type.
 			///
-			/// \param value to wrap.
+			/// \param wrap to wrap.
 			var(subroutine_t wrap) noexcept
 			{
 				this->size                  = size_struct();
@@ -3136,7 +3136,7 @@ namespace libletlib
 
 			/// \brief Constructor for function type.
 			///
-			/// \param value to wrap.
+			/// \param wrap to wrap.
 			var(function_t wrap) noexcept
 			{
 				this->size                = size_struct();
@@ -3170,7 +3170,7 @@ namespace libletlib
 
 			/// \brief Constructor for nullptr_t value.
 			///
-			///	\param _value to wrap.
+			///	\param wrap to wrap.
 			var(std::nullptr_t const wrap) noexcept
 			{
 				this->size               = size_struct();
@@ -4580,7 +4580,7 @@ namespace libletlib
 						this->value.subroutine_type(*this, in);
 						break;
 					case enum_void_pointer_type: {
-						var& overload = this->message("()");
+						var const& overload = this->message("()");
 						if (overload != empty_value)
 						{
 							result = overload(in);
@@ -4648,10 +4648,10 @@ namespace libletlib
 			LIBLETLIB_NODISCARD inline MetaRoot* objectify() noexcept;
 
 			template<typename String>
-			var& message(String) noexcept;
+			var& message(String const&) noexcept;
 
 			template<typename String>
-			var& message(String) const noexcept;
+			var const& message(String const&) const noexcept;
 
 			/// \brief Copy a range of var values.
 			/// \tparam Low number converitble to index.

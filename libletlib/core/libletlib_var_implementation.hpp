@@ -39,6 +39,18 @@ namespace libletlib
 	namespace detail
 	{
 
+
+		class Var final : public Root<Var>
+		{
+		public:
+			Var()
+			{
+				inner = {{"Var", ([&](LIBLETLIB_MAYBE_UNUSED var const& self, LIBLETLIB_MAYBE_UNUSED var const& args) -> void {
+							  this->message("value") = backing::length(args) > 0 ? args[0] : this->message("value");
+						  })++}, {"value", var()}};
+			}
+		};
+
 		/// \brief Copy assignment operator.
 		/// \param _other var to copy from.
 		/// \return copy of _other.
@@ -315,7 +327,9 @@ namespace libletlib
 		{
 			if (this->behaviour->rank == enum_void_pointer_type)
 				return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
-			*this = new Var(*this);
+			var const copy = *this;
+			*this = new Var;
+			this->message("Var")(copy);
 			return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
 		}
 
@@ -324,30 +338,21 @@ namespace libletlib
 		/// \param string message to send.
 		/// \return the result of the message call.
 		template<typename String>
-		LIBLETLIB_NODISCARD inline var& var::message(String const string) noexcept
+		LIBLETLIB_NODISCARD inline var& var::message(String const& string) noexcept
 		{
 			return this->objectify()->message(string);
 		}
-
 
 		/// \brief Send a message to an object.
 		/// \tparam String type of string to send.
 		/// \param string message to send.
 		/// \return the result of the message call.
 		template<typename String>
-		LIBLETLIB_NODISCARD inline var& var::message(String const string) const noexcept
+		LIBLETLIB_NODISCARD inline var const& var::message(String const& string) const noexcept
 		{
 			return this->objectify()->message(string);
 		}
 
-		/// \brief Send a message to a object.
-		/// \param string field to contact.
-		/// \return the result of the message call.
-		template<>
-		LIBLETLIB_NODISCARD inline var& var::message<var const&>(var const& string) const noexcept
-		{
-			return this->objectify()->message(string);
-		}
 	#endif
 
 		/// \brief Copy memory from one pointer to another.
