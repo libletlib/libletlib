@@ -293,9 +293,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var string_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var string_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(string_length(_value.value.string_type));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index < length)
 			{
 				return _value.value.string_type[_index];
@@ -313,9 +316,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var wide_string_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var wide_string_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(string_length(_value.value.wide_string_type));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index < length)
 			{
 				return _value.value.wide_string_type[_index];
@@ -335,9 +341,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var bit8_string_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var bit8_string_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(string_length(_value.value.bit8_string_type));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index < length)
 			{
 				return _value.value.bit8_string_type[_index];
@@ -356,9 +365,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var bit16_string_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var bit16_string_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(string_length(_value.value.bit16_string_type));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index < length)
 			{
 				return _value.value.bit16_string_type[_index];
@@ -376,9 +388,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var bit32_string_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var bit32_string_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(string_length(_value.value.bit32_string_type));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index <= length)
 			{
 				return _value.value.bit32_string_type[_index];
@@ -404,8 +419,8 @@ namespace libletlib
 	#ifndef LIBLETLIB_FREESTANDING
 			if (_value.behaviour->rank == enum_void_pointer_type)
 			{
-				var& overload = _value.objectify()->property("[]");
-				if (overload != EMPTY_VALUE)
+				var& overload = _value.objectify()->message("[]");
+				if (overload != empty_value)
 				{
 					return overload(_value, _index);
 				}
@@ -432,9 +447,12 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return value at index.
-		LIBLETLIB_NODISCARD inline var array_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var array_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			long const length = static_cast<long>(backing::length(_value));
+			if(length == 0) {
+				LIBLETLIB_ERROR("Array access out of bounds.", static_cast<int>(LIBLETLIB_EDOM))
+			}
 			if (_index >= 0l && _index < length)
 			{
 				return _value.value.array_type[_index];
@@ -463,7 +481,7 @@ namespace libletlib
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
 		/// \return Var at index.
-		LIBLETLIB_NODISCARD inline var function_index(var const& _value, var const& _index) noexcept
+		LIBLETLIB_NODISCARD inline var function_index(var const& _value, var const& _index) LIBLETLIB_NOEXCEPT
 		{
 			return var(_value.value.function_type)()[_index];
 		}

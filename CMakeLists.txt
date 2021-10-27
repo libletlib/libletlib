@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(LibLetLib VERSION 0.99)
+project(LibLetLib VERSION 2020.2.0)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 

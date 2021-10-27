@@ -551,11 +551,42 @@ inline void TestOperation<char32_t const*, char32_t const*>(char32_t const* left
 }
 #endif
 
-type(Foo) contains(member(msg) = list("Hello", "World", '!')
+type(Foo) contains(
+    constructor()
+    member(msg) = list("Hello", "World", '!')
+    member(println) = []subroutine(std::cout << st + " " + nd + rd << std::endl;)
+)
 
-                       member(println) = [] subroutine(std::cout << st + " " + nd + rd << std::endl;))
+type(Bar) contains(
+    constructor()
+    member(foo) = "Foo"
+	member(bar) = [&]function(return this->message("foo");)
+)
 
-    int main(void)
+let print = []subroutine(
+	for(let& arg : args) {
+		std::cout << arg;
+    }
+);
+
+let println = []subroutine(
+    for(let& arg : args) {
+	    std::cout << arg;
+    }
+    std::cout << std::endl;
+);
+
+type(Vector)
+    contains(
+	constructor(
+            message("x") = st;
+                  message("y") = nd;
+                  message("z") = rd;
+        )
+    member(msg) = "Hello"
+)
+
+int main()
 {
 	TestOperation<bool, bool>(true, true);
 	TestOperation<char, char>('2', '2');
@@ -641,18 +672,20 @@ type(Foo) contains(member(msg) = list("Hello", "World", '!')
 	var foo = new Foo;
 	foo.message("println").apply<3>(foo.message("msg"));
 	var spicyRange = curry(range, 1, 10);
-	std::cout << spicyRange(2) << std::endl;
+	println(spicyRange(2));
 	let list0 = list(1, 2, 3);
 	let list1 = list(3, 2, 1, 4);
 
-	let match_test = match(list0, list1) with | [] lambda(st != nd)->*[] lambda(st) | otherwise->*[] lambda(nd);
+	let match_test = match(list0, list1) against
+	                 | lambda(st != nd) ->* lambda(st)
+	                 | otherwise ->* lambda(nd);
 
 	std::cout << "Pattern: " << match_test << std::endl;
 
-	std::cout << filter([] lambda(st > 10), foldr([] lambda(st + nd), spicyRange(1))) << std::endl;
+	std::cout << filter(lambda(st > 10), foldr(lambda(st + nd), spicyRange(1))) << std::endl;
 
 	let iter = {1, 2, 3};
-	let map2 = foldl([] lambda(nd += (st + 1)), iter, list());
+	let map2 = foldl(lambda(nd += (st + 1)), iter, list());
 	std::cout << map2 << std::endl;
 
 	let list_sum    = iter + iter;
@@ -669,13 +702,55 @@ type(Foo) contains(member(msg) = list("Hello", "World", '!')
 	var x = 1;
 	std::cout << x.message("value") << std::endl;
 
-	var nested = {1, {"2", {3.0, [] lambda('4')}}};
+	var nested = {1, {"2", {3.0, lambda('4')}}};
 	std::cout << flatten(nested) << std::endl << foo << std::endl;
 
 	let str = "0123456789";
 	let arr = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 	std::cout << str.slice(-1, 2) << std::endl; // "901"
 	std::cout << arr.slice(8, 11) << std::endl; // [8, 9, 9]
+
+	let bar = new Bar;
+	println(bar["bar"]());
+
+	let nil = list();
+#ifdef LIBLETLIB_ERROR_EXCEPTION
+	try {
+		println(nil[1]);
+	} catch(std::domain_error const&) {
+	}
 #endif
+
+	let ptrn1 = list(1, 2, 3, 4, 5, 6);
+	let ptrn2 = list(list(1, 2, 3), list(1, 2, 3));
+	let ptrn3 = list(list(1, 2), list(1, 2, 3));
+	let ptrn4 = list(list(1), 1l, 1ul, 1ll, 1ull, 1.0f, 1.0, 1.0L);
+
+	let rslt1 = match(ptrn1) against
+	           | "#[(i)]" ->* var(1)
+	           | otherwise ->* 0;
+
+	let rslt2 = match(ptrn2) against
+	            | "#[(#[iii])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	let rslt3 = match(ptrn3) against
+	            | "#[(#[(i)])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	let rslt4 = match(ptrn4) against
+	            | "#[(DfdQqIlL#[i])]" ->* var(1)
+	            | otherwise ->* 0;
+
+	std::cout << (rslt1 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt2 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt3 == 1 ? "YEY" : "NAY") << std::endl;
+	std::cout << (rslt4 == 1 ? "YEY" : "NAY") << std::endl;
+
+	let vec = construct(Vector) with (1, 2, 3);
+	let vec2 = new Vector;
+	println(vec);
+#endif
+
 	return EXIT_SUCCESS;
 }

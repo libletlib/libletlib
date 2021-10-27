@@ -736,6 +736,9 @@ namespace libletlib
 	#ifndef LIBLETLIB_FREESTANDING
 	using libletlib::detail::MetaRoot;
 	using libletlib::detail::Root;
+	namespace detail {
+		let any_type_pattern = static_cast<char>(enum_any_type_id);
+	}
 	#endif
 }// namespace libletlib
 
@@ -745,12 +748,12 @@ namespace libletlib
 				/// \def match
 				/// Create pattern matching object.
 				#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
-				/// \def with
+				/// \def against
 				/// Finalise pattern matching object.
-				#define with )
+				#define against )
 				/// \def otherwise
 				/// Match any pattern.
-				#define otherwise static_cast<char>(enum_any_type_id)
+				#define otherwise libletlib::detail::any_type_pattern
 			#endif
 
 			/// \def st
@@ -788,7 +791,7 @@ namespace libletlib
 					++
 				/// \def lambda
 				/// Syntactic sugar for oneliner returning functions.
-				#define lambda(expression) function(return expression;)
+				#define lambda(expression) []function(return expression;)
 
 				/// \def curry
 				/// Syntactic sugar for currying functions.
@@ -802,14 +805,14 @@ namespace libletlib
 
 			#if (__cplusplus >= 201103L)
 				/// \def type
-				/// Declare a catlang type and inner types within it under this.
+				/// Declare a libletlib type and inner types within it under this.
 				#define type(Name)                                                                                     \
 					class Name final : public Root<Name>                                                               \
 					{                                                                                                  \
 					public:                                                                                            \
 						Name()                                                                                         \
 						{                                                                                              \
-							inner = { {"name", #Name}
+							inner = { libletlib::detail::field(#Name)
 
 				/// \def contains
 				/// Include fields in this object.
@@ -820,11 +823,26 @@ namespace libletlib
 					}                                                                                                  \
 					}                                                                                                  \
 					;
-			#endif
 
-			/// \def member
-			/// Creates a field in a libletlib object.
-			#define member(key) , libletlib::detail::field(#key)
+				/// \def constructor
+				/// Define the constructor of this object.
+				#define constructor(code) = [&]subroutine(code)
+
+				/// \def construct
+				/// Call the constructor of an object (the field that has the name of the object, it must be invokable.
+				#define construct(Name) [](LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) -> var {\
+                    var base = new Name;\
+					base.message(#Name)
+
+				/// \def with
+				/// For giving the construct macro its arguments.
+				#define with(...) (__VA_ARGS__); \
+									return base;}++()
+
+				/// \def member
+				/// Creates a field in a libletlib object.
+				#define member(key) , libletlib::detail::field(#key)
+			#endif
 		#endif
 	#endif
 

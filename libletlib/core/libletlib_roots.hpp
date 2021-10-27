@@ -43,7 +43,7 @@ namespace libletlib
 	{
 
 		/// \brief Represents an empty value.
-		var EMPTY_VALUE = var();
+		var const empty_value = var();
 
 #if (__cplusplus >= 201103L)
 	#ifndef LIBLETLIB_FREESTANDING
@@ -60,7 +60,7 @@ namespace libletlib
 					return pair.at(1);
 				}
 			}
-			return EMPTY_VALUE;
+			return const_cast<var&>(empty_value);
 		}
 
 		/// \brief Root type all objects are casted to.
@@ -83,8 +83,51 @@ namespace libletlib
 			virtual ~MetaRoot() noexcept                                       = default;
 			virtual inline MetaRoot* create() const noexcept                   = 0;
 			virtual inline MetaRoot* clone() const noexcept                    = 0;
-			virtual inline var& property(char const* key) noexcept             = 0;
-			virtual inline var const& property(char const* key) const noexcept = 0;
+
+			/// \brief Get a member by its key.
+			/// \param key of member to property.
+			/// \return reference to the member pointed to by its key.
+			LIBLETLIB_NODISCARD inline var& message(char const* const key) noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					this->inner = this->inner += backing::list(key, var());
+				else
+					return result;
+				return libletlib::detail::property_reference(this->inner, key);
+			}
+
+			/// \brief Get a const reference to a member by its key.
+			/// \param key of member to property.
+			/// \return const reference to the member pointed to by its key.
+			LIBLETLIB_NODISCARD inline var const& message(char const* const key) const noexcept
+			{
+				return libletlib::detail::property_reference(this->inner, key);
+			}
+
+			/// \brief Get a const reference to a member by its key.
+			/// \param key of member to property.
+			/// \return const reference to the member pointed to by its key.
+			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD inline var const& fetch(char const* const key) const noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					return libletlib::detail::empty_value;
+				else
+					return result;
+			}
+
+			/// \brief If a property with a key exists.
+			/// \param key of member to property.
+			/// \return true if exists, otherwise false.
+			LIBLETLIB_MAYBE_UNUSED LIBLETLIB_NODISCARD inline bool has(char const* const key) const noexcept
+			{
+				var& result = libletlib::detail::property_reference(this->inner, key);
+				if (std::addressof(result) == std::addressof(libletlib::detail::empty_value))
+					return false;
+				else
+					return true;
+			}
 		};
 
 		/// \brief "Reverse" inheriting class via Curiously Recurring Template Pattern
@@ -110,41 +153,10 @@ namespace libletlib
 				return new Inheritor(*static_cast<Inheritor const*>(this));
 			}
 
-			/// \brief Get a member by its key.
-			/// \param key of member to property.
-			/// \return reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var& property(char const* const key) noexcept override
-			{
-				var& result = libletlib::detail::property_reference(this->inner, key);
-				if (std::addressof(result) == std::addressof(libletlib::detail::EMPTY_VALUE))
-					this->inner = this->inner << backing::list(key, var());
-				else
-					return result;
-				return libletlib::detail::property_reference(this->inner, key);
-			}
-
-			/// \brief Get a const reference to a member by its key.
-			/// \param key of member to property.
-			/// \return const reference to the member pointed to by its key.
-			LIBLETLIB_NODISCARD inline var const& property(char const* const key) const noexcept override
-			{
-				return libletlib::detail::property_reference(this->inner, key);
-			}
 		};
 
-		class Var final : public Root<Var>
-		{
-		public:
-			Var()
-			{
-				inner = {{"name", "Var"}, {"value", var()}};
-			}
+		class Var;
 
-			explicit Var(var const& value)
-			{
-				inner = {{"name", "Var"}, {"value", value}};
-			}
-		};
 	#endif
 #endif
 	}// namespace detail

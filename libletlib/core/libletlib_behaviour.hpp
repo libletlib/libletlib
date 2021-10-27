@@ -2253,17 +2253,17 @@ namespace libletlib
 
 		var long_double_index(var const&, var const&) noexcept;
 
-		var string_index(var const&, var const&) noexcept;
+		var string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
-		var wide_string_index(var const&, var const&) noexcept;
+		var wide_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #ifndef LIBLETLIB_DISABLE_UCHAR
 	#if (__cplusplus >= 202002L)
-		var bit8_string_index(var const&, var const&) noexcept;
+		var bit8_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 	#endif
-		var bit16_string_index(var const&, var const&) noexcept;
+		var bit16_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
-		var bit32_string_index(var const&, var const&) noexcept;
+		var bit32_string_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #endif
 
@@ -2271,11 +2271,11 @@ namespace libletlib
 
 #ifndef LIBLETLIB_FREESTANDING
 
-		var array_index(var const&, var const&) noexcept;
+		var array_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 		var subroutine_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
-		var function_index(var const&, var const&) noexcept;
+		var function_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
 
 #endif
 #if (__cplusplus >= 201103L)

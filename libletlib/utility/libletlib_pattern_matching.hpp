@@ -67,6 +67,82 @@ namespace libletlib
 			return match_condition(_type, _expression);
 		}
 
+		/// \brief Test matching of shape of data against a _pattern.
+		/// \param _pattern to match.
+		/// \param _matchee trying to match.
+		/// \return true if matches, false if doesn't.
+		bool match_pattern(var const& _pattern, var const& _matchee) noexcept {
+			char const* const pattern_end = _pattern.value.string_type+ _pattern.size.in_use;
+			char const* const matchee_end = _matchee.value.string_type+ _matchee.size.in_use;
+			char const* pattern_ptr = _pattern.value.string_type;
+			char const* matchee_ptr = _matchee.value.string_type;
+			var matchable = backing::list();
+			for(;pattern_ptr != pattern_end; ++pattern_ptr) {
+				if(matchee_ptr != matchee_end && *matchee_ptr == '(') {
+					matchable = backing::list();
+					++matchee_ptr;
+					for(;*matchee_ptr != ')' && matchee_ptr != matchee_end; ++matchee_ptr) {
+						if(*matchee_ptr == '#')
+						{
+							char const* const slice_start = matchee_ptr;
+							matchee_ptr += 2;
+							for(;*matchee_ptr != ']' && matchee_ptr != matchee_end; ++matchee_ptr);
+							matchable += _matchee.slice(slice_start, matchee_ptr+1);
+							continue;
+						}
+						else if(*matchee_ptr == '@')
+						{
+							char const* const slice_start = matchee_ptr;
+							matchee_ptr += 2;
+							for(;*matchee_ptr != '}' && matchee_ptr != matchee_end; ++matchee_ptr);
+							matchable += _matchee.slice(slice_start, matchee_ptr+1);
+							continue;
+						}
+						else {
+							matchable += *matchee_ptr;
+							continue;
+						}
+					}
+					++matchee_ptr;
+				}
+				if(matchee_ptr != matchee_end && *pattern_ptr == *matchee_ptr) {
+					goto next;
+				} else if(matchable.size.in_use > 0) {
+					for(var const& candidate : matchable) {
+						if(candidate.behaviour->rank == enum_string_type && *pattern_ptr == '#') {
+							var list_pattern = "";
+							char const* const slice_start = pattern_ptr;
+							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
+							list_pattern += _pattern.slice(slice_start, pattern_ptr + 1);
+							if(!string_compare(list_pattern.value.string_type, candidate.value.string_type)
+							    || (character_search(candidate.value.string_type, '(') && match_pattern(list_pattern, candidate)))
+								goto next;
+
+						} else if(candidate.behaviour->rank == enum_string_type && *_pattern == '@') {
+							var object_pattern = "";
+							char const* const slice_start = pattern_ptr;
+							for(;*pattern_ptr != ']' && pattern_ptr != pattern_end; ++pattern_ptr);
+							object_pattern += _pattern.slice(slice_start, pattern_ptr + 1);
+
+							if(!string_compare(object_pattern.value.string_type, candidate.value.string_type)
+							    || (character_search(candidate.value.string_type, '(') && match_pattern(candidate, object_pattern)))
+								goto next;
+
+						} else if(*pattern_ptr == candidate.value.char_type) {
+							goto next;
+						}
+					}
+					return false;
+				} else {
+					return false;
+				}
+next:
+				if(matchee_ptr + 1 != matchee_end)
+					++matchee_ptr;
+			}
+			return true;
+		}
+
 		/// \brief Class to facilitate pattern matching.
 		/// \tparam Size amount of match condition variables.
 		template<std::size_t Size>
@@ -85,7 +161,7 @@ namespace libletlib
 			matcher(Arguments... _matchees) noexcept
 			{
 				matchees = backing::list(_matchees...);
-				pattern  = libletlib::detail::pattern_(var(), matchees);
+				pattern  = libletlib::detail::pattern_(libletlib::detail::pattern_, matchees);
 			}
 
 			/// \brief Facilitate match conditions with pattern:
@@ -106,7 +182,7 @@ namespace libletlib
                                                          libletlib::detail::make_index_sequence<Size> {});
 						matched = true;
 					}
-					else if (pattern == _condition.pattern || _condition.pattern == static_cast<char>(enum_any_type_id))
+					else if (match_pattern(pattern, _condition.pattern) || _condition.pattern == static_cast<char>(enum_any_type_id))
 					{
 						result  = var::flatten_and_invoke(_condition.expression, matchees,
                                                          libletlib::detail::make_index_sequence<Size> {});
