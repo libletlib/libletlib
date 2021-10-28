@@ -252,10 +252,6 @@ namespace libletlib
 			{
 				switch (value.behaviour->rank)
 				{
-#if (CHAR_MIN == 0)
-					case enum_char_type:
-						LIBLETLIB_FALLTHROUGH
-#endif
 					case enum_unsigned_char_type:
 						LIBLETLIB_FALLTHROUGH
 #ifndef LIBLETLIB_DISABLE_UCHAR
@@ -279,6 +275,10 @@ namespace libletlib
 					case enum_unsigned_long_type:
 						return true;
 					default:
+						if (std::numeric_limits<char>::min() == 0)
+						{
+							return true;
+						}
 						return false;
 				}
 			}
@@ -290,10 +290,6 @@ namespace libletlib
 			{
 				switch (value.behaviour->rank)
 				{
-#if (CHAR_MIN == SCHAR_MIN)
-					case enum_char_type:
-						LIBLETLIB_FALLTHROUGH
-#endif
 					case enum_signed_char_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_wchar_type:
@@ -309,6 +305,10 @@ namespace libletlib
 					case enum_long_type:
 						return true;
 					default:
+						if (std::numeric_limits<char>::min() == std::numeric_limits<signed char>::min())
+						{
+							return true;
+						}
 						return false;
 				}
 			}

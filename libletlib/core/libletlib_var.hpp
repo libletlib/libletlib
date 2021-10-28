@@ -2766,10 +2766,10 @@ namespace libletlib
 		#if (__cplusplus >= 202002L)
 			/// \brief Constructor for char8_t value.
 			///
-			///	\param value to wrap.
-			var(char8_t const value) noexcept
+			///	\param wrap to wrap.
+			var(char8_t const wrap) noexcept
 			{
-				this->value.char8_type = value;
+				this->value.char8_type = wrap;
 				this->size             = size_struct(sizeof(char8_t));
 				this->behaviour        = &bit8_character_behaviour;
 			}
@@ -2939,11 +2939,11 @@ namespace libletlib
 		#if (__cplusplus >= 202002L)
 			/// \brief Constructor for 8 bit string value.
 			///
-			///	\param value to wrap.
-			var(char8_t const* const value) noexcept
+			///	\param wrap to wrap.
+			var(char8_t const* const wrap) noexcept
 			{
-				this->value              = value_union(value);
-				std::size_t const length = string_length(value) * sizeof(char8_t);
+				this->value              = value_union(wrap);
+				std::size_t const length = string_length(wrap) * sizeof(char8_t);
 				this->size               = size_struct(length, length + sizeof(char8_t));
 				this->behaviour          = &bit8_string_behaviour;
 			}

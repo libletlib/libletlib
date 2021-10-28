@@ -137,7 +137,7 @@ namespace libletlib
 
 			/// \brief Prefix increment this iterator.
 			/// \return Incremented iterator.
-			LIBLETLIB_NODISCARD array_iterator& operator++() noexcept
+			array_iterator& operator++() noexcept
 			{
 				++this->position;
 				return *this;
@@ -145,7 +145,7 @@ namespace libletlib
 
 			/// \brief Prefix decrement this iterator.
 			/// \return Decremented iterator.
-			LIBLETLIB_NODISCARD array_iterator& operator--() noexcept
+			array_iterator& operator--() noexcept
 			{
 				--this->position;
 				return *this;
