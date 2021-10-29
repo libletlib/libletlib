@@ -750,6 +750,12 @@ int main()
 	let vec = construct(Vector) with (1, 2, 3);
 	let vec2 = new Vector;
 	println(vec);
+
+	let fn = []function(return 1 + st;);
+	let fm = []function(return 2 + st;);
+	let fk = []function(return 3 + st;);
+	let ff = libletlib::detail::compose_(var(), list(fk, fn, fm))(1);
+	std::cout << fn(1) << fm(1) << ff << std::endl;
 #endif
 
 	return EXIT_SUCCESS;

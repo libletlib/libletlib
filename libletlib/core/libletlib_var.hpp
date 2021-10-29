@@ -2682,6 +2682,7 @@ namespace libletlib
 
 #ifdef LIBLETLIB_HOSTED
 			friend bool match_pattern(var const&, var const&) noexcept;
+			friend var compose_(var const&, var const&) noexcept;
 			friend var pattern_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldl_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldr_(var const&, var const&) LIBLETLIB_NOEXCEPT;
