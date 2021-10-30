@@ -43,28 +43,28 @@ namespace libletlib
 		/// \brief Curries functions by creating static versions with the arguments injected into the lambda.
 		/// \tparam UniqueDummy unique type to trigger arbitrary amount of template instantiations.
 		/// \tparam Arguments to curry with.
-		/// \param invokable to curry.
-		/// \param arguments to curry with.
+		/// \param _invokable to curry.
+		/// \param _arguments to curry with.
 		/// \return var containing the curried function/subroutine.
 		template<typename UniqueDummy, typename... Arguments>
-		LIBLETLIB_NODISCARD inline var curry_(LIBLETLIB_MAYBE_UNUSED UniqueDummy&&, var const& invokable,
-		                                      Arguments const&... arguments) noexcept
+		LIBLETLIB_NODISCARD inline var curry_(LIBLETLIB_MAYBE_UNUSED UniqueDummy&&, var const& _invokable,
+		                                      Arguments const&... _arguments) noexcept
 		{
-			if (invokable.behaviour->rank == enum_function_type)
+			if (_invokable.behaviour->rank == enum_function_type)
 			{
-				static function_t original = invokable.value.function_type;
-				return var(capture([arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> var {
-					           return original(original, backing::list(arguments...) << args);
+				static function_t original = _invokable.value.function_type;
+				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> var {
+					           return original(original, backing::list(_arguments...) << args);
 				           }),
-				           invokable.size.in_use + sizeof...(arguments));
+				           _invokable.size.in_use + sizeof...(_arguments));
 			}
-			if (invokable.behaviour->rank == enum_subroutine_type)
+			if (_invokable.behaviour->rank == enum_subroutine_type)
 			{
-				static subroutine_t original = invokable.value.subroutine_type;
-				return var(capture([arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> void {
-					           original(original, backing::list(arguments...) << args);
+				static subroutine_t original = _invokable.value.subroutine_type;
+				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> void {
+					           original(original, backing::list(_arguments...) << args);
 				           }),
-				           invokable.size.in_use + sizeof...(arguments));
+				           _invokable.size.in_use + sizeof...(_arguments));
 			}
 			return nothing;
 		}
