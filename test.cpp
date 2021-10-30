@@ -754,7 +754,7 @@ int main()
 	let fn = []function(return 1 + st;);
 	let fm = []function(return 2 + st;);
 	let fk = []function(return 3 + st;);
-	let ff = compose(fk, compose(fm, fn));
+	let ff = compose(fk, fm, fn);
 	std::cout << fk(1) << fm(1) << fn(1) << ff(1) << std::endl;
 #endif
 

@@ -28,7 +28,7 @@ namespace libletlib
 			for (std::size_t index = 0; index < sizeof...(_arguments); ++index)
 				composing[index] = composables.value.array_type[index].value.function_type;
 
-			var composed = var(capture([](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> var {
+			var composed = var(capture([](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) LIBLETLIB_NOEXCEPT -> var {
 				function_t const* composing_end = composing + sizeof...(_arguments) - 1;
 				var result = (*composing_end)((*composing_end), args);
 				--composing_end;

@@ -53,7 +53,7 @@ namespace libletlib
 			if (_invokable.behaviour->rank == enum_function_type)
 			{
 				static function_t original = _invokable.value.function_type;
-				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> var {
+				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) LIBLETLIB_NOEXCEPT -> var {
 					           return original(original, backing::list(_arguments...) << args);
 				           }),
 				           _invokable.size.in_use + sizeof...(_arguments));
@@ -61,7 +61,7 @@ namespace libletlib
 			if (_invokable.behaviour->rank == enum_subroutine_type)
 			{
 				static subroutine_t original = _invokable.value.subroutine_type;
-				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) -> void {
+				return var(capture([_arguments...](LIBLETLIB_MAYBE_UNUSED var const& self, var const& args) LIBLETLIB_NOEXCEPT -> void {
 					           original(original, backing::list(_arguments...) << args);
 				           }),
 				           _invokable.size.in_use + sizeof...(_arguments));

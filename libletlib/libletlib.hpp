@@ -777,7 +777,7 @@ namespace libletlib
 				/// \def subroutine
 				/// Nonreturning function.
 				#define subroutine(code)                                                                               \
-					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args)->void                       \
+					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT -> void  \
 					{                                                                                                  \
 						code                                                                                           \
 					}                                                                                                  \
@@ -785,7 +785,7 @@ namespace libletlib
 				/// \def type
 				/// Returning function.
 				#define function(code)                                                                                 \
-					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args)->var                        \
+					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT -> var   \
 					{                                                                                                  \
 						code                                                                                           \
 					}                                                                                                  \
