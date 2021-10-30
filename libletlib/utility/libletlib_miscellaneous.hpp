@@ -786,24 +786,6 @@ namespace libletlib
 	#endif
 			return backing::type_id(value);
 		}
-
-	#if (__cplusplus >= 201103L)
-		LIBLETLIB_NODISCARD inline var compose_(LIBLETLIB_MAYBE_UNUSED var const&, var const& outer_args) noexcept {
-				for(var const& composable : outer_args) {
-				    if(composable.behaviour->rank != enum_function_type
-				     && (composable.behaviour->rank != enum_void_pointer_type || !composable.objectify()->has("()")))
-					    return nothing;
-			    }
-				return [&](LIBLETLIB_MAYBE_UNUSED var const&, var const& args) -> var {
-				    var result = args.size.in_use == 1 ? args[0] : args;
-				    for(std::size_t index = outer_args.size.in_use; index >= 1; --index)
-				    {
-					    result = outer_args[index - 1](outer_args[index](result));
-				    }
-				    return result;
-				}++;
-		}
-	#endif
 #endif
 
 	}// namespace detail
@@ -825,7 +807,6 @@ namespace libletlib
 	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_object         = libletlib::detail::is_object_;
 	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_null           = libletlib::detail::is_null_;
 	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_empty          = libletlib::detail::is_empty_;
-	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const compose           = libletlib::detail::compose_;
 #endif
 }// namespace libletlib
 

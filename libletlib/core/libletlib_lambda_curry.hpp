@@ -39,7 +39,7 @@ namespace libletlib
 {
 	namespace detail
 	{
-
+	#if (__cplusplus >= 201103L)
 		/// \brief Curries functions by creating static versions with the arguments injected into the lambda.
 		/// \tparam UniqueDummy unique type to trigger arbitrary amount of template instantiations.
 		/// \tparam Arguments to curry with.
@@ -66,9 +66,9 @@ namespace libletlib
 				           }),
 				           invokable.size.in_use + sizeof...(arguments));
 			}
-			return var();
+			return nothing;
 		}
-
+	#endif
 	}// namespace detail
 }// namespace libletlib
 

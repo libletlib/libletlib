@@ -2665,6 +2665,8 @@ namespace libletlib
 			friend var& property_reference(var const&, char const*) noexcept;
 			template<typename UniqueDummy, typename... Arguments>
 			friend var curry_(UniqueDummy&&, var const&, Arguments const&...) noexcept;
+			template<typename UniqueDummy, typename... Arguments>
+			friend var compose_(UniqueDummy&&, Arguments const&...) noexcept;
 			friend int backing::rank_compare(var const&, var const&) noexcept;
 			friend bool backing::is_string(var const& value) noexcept;
 			friend bool backing::is_character(var const&) noexcept;
@@ -2682,7 +2684,6 @@ namespace libletlib
 
 #ifdef LIBLETLIB_HOSTED
 			friend bool match_pattern(var const&, var const&) noexcept;
-			friend var compose_(var const&, var const&) noexcept;
 			friend var pattern_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldl_(var const&, var const&) LIBLETLIB_NOEXCEPT;
 			friend var foldr_(var const&, var const&) LIBLETLIB_NOEXCEPT;

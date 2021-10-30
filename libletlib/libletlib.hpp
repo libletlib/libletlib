@@ -669,6 +669,7 @@
 	#include "core/libletlib_lambda_capture.hpp"
 	#include "core/libletlib_var.hpp"
 	#include "core/libletlib_lambda_curry.hpp"
+	#include "core/libletlib_lambda_compose.hpp"
 	#include "core/libletlib_error.hpp"
 	#include "core/libletlib_lambda_helper.hpp"
 	#include "core/libletlib_value_union_implementation.hpp"
@@ -797,6 +798,14 @@ namespace libletlib
 				/// Syntactic sugar for currying functions.
 				#define curry(...)                                                                                     \
 					libletlib::detail::curry_(                                                                         \
+					    []() noexcept {                                                                                \
+					    },                                                                                             \
+					    __VA_ARGS__)
+
+				/// \def compose
+				/// Syntactic sugar for composing functions.
+				#define compose(...)                                                                                   \
+					libletlib::detail::compose_(                                                                       \
 					    []() noexcept {                                                                                \
 					    },                                                                                             \
 					    __VA_ARGS__)
