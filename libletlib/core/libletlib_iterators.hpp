@@ -35,6 +35,7 @@
 #define LIBLETLIB_LIBLETLIB_ITERATORS_HPP
 
 #include "libletlib_var.hpp"
+#include "libletlib_error.hpp"
 
 namespace libletlib
 {
@@ -392,13 +393,16 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Iterator to the start.
-		LIBLETLIB_NODISCARD inline var_iterator begin(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline var_iterator begin(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank == enum_array_type)
 			{
 				return var_iterator(_var.value.array_type);
 			}
-			return var_iterator(_var.behaviour->as_array(_var).value.array_type);
+			LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+			return var();
+		#endif
 		}
 
 		/// \brief Get iterator of the end.
@@ -407,12 +411,14 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Iterator to the end.
-		LIBLETLIB_NODISCARD inline var_iterator end(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline var_iterator end(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank != enum_array_type)
 			{
-				var array = _var.behaviour->as_array(_var);
-				return var_iterator(array.value.array_type + array.size.in_use);
+				LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+				return var();
+		#endif
 			}
 			return var_iterator(_var.value.array_type + _var.size.in_use);
 		}
@@ -423,13 +429,16 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Constant iterator to the start.
-		LIBLETLIB_NODISCARD inline let_iterator cbegin(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline let_iterator cbegin(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank == enum_array_type)
 			{
 				return let_iterator(_var.value.array_type);
 			}
-			return let_iterator(_var.behaviour->as_array(_var).value.array_type);
+			LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+			return var();
+		#endif
 		}
 
 		/// \brief Get constant iterator of the end.
@@ -438,12 +447,14 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Constant iterator to the end.
-		LIBLETLIB_NODISCARD inline let_iterator cend(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline let_iterator cend(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list(_var);
-				return let_iterator(array.value.array_type + array.size.in_use);
+				LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+				return var();
+		#endif
 			}
 			return let_iterator(_var.value.array_type + _var.size.in_use);
 		}
@@ -454,12 +465,14 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Reverse iterator to the start.
-		LIBLETLIB_NODISCARD inline var_reverse_iterator rbegin(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline var_reverse_iterator rbegin(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list(_var);
-				return var_reverse_iterator(array.value.array_type + array.size.in_use - 1ul);
+				LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+				return var();
+		#endif
 			}
 			return var_reverse_iterator(_var.value.array_type + _var.size.in_use - 1ul);
 		}
@@ -470,9 +483,15 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Reverse iterator to the end.
-		LIBLETLIB_NODISCARD inline var_reverse_iterator rend(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline var_reverse_iterator rend(var const& _var) LIBLETLIB_NOEXCEPT
 		{
-			return var_reverse_iterator(_var.value.array_type - 1ul);
+			if(_var.behaviour->rank == enum_array_type) {
+				return var_reverse_iterator(_var.value.array_type - 1ul);
+			}
+			LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+			return var();
+		#endif
 		}
 
 		/// \brief Get constant reverse iterator of the start.
@@ -481,12 +500,14 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Constant reverse iterator to the start.
-		LIBLETLIB_NODISCARD inline let_reverse_iterator crbegin(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline let_reverse_iterator crbegin(var const& _var) LIBLETLIB_NOEXCEPT
 		{
 			if (_var.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list(_var);
-				return let_reverse_iterator(array.value.array_type + array.size.in_use - 1ul);
+				LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+				return var();
+		#endif
 			}
 			return let_reverse_iterator(_var.value.array_type + _var.size.in_use - 1ul);
 		}
@@ -497,9 +518,16 @@ namespace libletlib
 		///
 		/// \param _var iterable.
 		/// \return Constant reverse iterator to the end.
-		LIBLETLIB_NODISCARD inline let_reverse_iterator crend(var const& _var) noexcept
+		LIBLETLIB_NODISCARD inline let_reverse_iterator crend(var const& _var) LIBLETLIB_NOEXCEPT
 		{
-			return let_reverse_iterator(_var.behaviour->as_array(_var).value.array_type - 1ul);
+			if (_var.behaviour->rank == enum_array_type)
+			{
+			return let_reverse_iterator(_var.value.array_type - 1ul);
+			}
+			LIBLETLIB_ERROR("Non-array for-each access.", static_cast<int>(LIBLETLIB_ENOTSUP))
+		#ifndef LIBLETLIB_ERROR_EXCEPTION
+			return var();
+		#endif
 		}
 	#endif
 #endif

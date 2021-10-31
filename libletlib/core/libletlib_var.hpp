@@ -2634,14 +2634,14 @@ namespace libletlib
 #if (__cplusplus >= 201103L)
 
 			friend int null_comparison(var const&, var const&) noexcept;
-			friend var_iterator begin(var const&) noexcept;
-			friend var_iterator end(var const&) noexcept;
-			friend let_iterator cbegin(var const&) noexcept;
-			friend let_iterator cend(var const&) noexcept;
-			friend var_reverse_iterator rbegin(var const&) noexcept;
-			friend var_reverse_iterator rend(var const&) noexcept;
-			friend let_reverse_iterator crbegin(var const&) noexcept;
-			friend let_reverse_iterator crend(var const&) noexcept;
+			friend var_iterator begin(var const&) LIBLETLIB_NOEXCEPT;
+			friend var_iterator end(var const&) LIBLETLIB_NOEXCEPT;
+			friend let_iterator cbegin(var const&) LIBLETLIB_NOEXCEPT;
+			friend let_iterator cend(var const&) LIBLETLIB_NOEXCEPT;
+			friend var_reverse_iterator rbegin(var const&) LIBLETLIB_NOEXCEPT;
+			friend var_reverse_iterator rend(var const&) LIBLETLIB_NOEXCEPT;
+			friend let_reverse_iterator crbegin(var const&) LIBLETLIB_NOEXCEPT;
+			friend let_reverse_iterator crend(var const&) LIBLETLIB_NOEXCEPT;
 #endif
 
 #ifndef LIBLETLIB_FREESTANDING
